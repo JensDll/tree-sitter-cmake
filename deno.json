@@ -1,0 +1,11 @@
+{
+  "imports": {
+    "tree-sitter-cli": "npm:tree-sitter-cli@0.25.8"
+  },
+  "compilerOptions": {
+    "checkJs": true,
+    "types": [
+      "tree-sitter-cli/dsl.d.ts"
+    ]
+  }
+}

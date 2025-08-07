@@ -1,0 +1,123 @@
+---
+Language: C
+
+IncludeBlocks: Regroup
+IncludeCategories:
+  - Regex: '^".+\.(h|hpp)"'
+    Priority: 0
+  - Regex: ^<.+\.(h|hpp)>
+    Priority: 1
+  - Regex: ^<[:alnum:]+>
+    Priority: 2
+
+AllowAllParametersOfDeclarationOnNextLine: false
+AllowShortBlocksOnASingleLine: Empty
+AllowShortCaseLabelsOnASingleLine: false
+AllowShortFunctionsOnASingleLine: Empty
+AllowShortIfStatementsOnASingleLine: Never
+AllowShortLambdasOnASingleLine: All
+AllowShortLoopsOnASingleLine: false
+
+AlignAfterOpenBracket: DontAlign
+AlignConsecutiveAssignments: false
+AlignConsecutiveDeclarations: false
+AlignEscapedNewlines: Left
+AlignOperands: Align
+AlignTrailingComments:
+  Kind: Leave
+
+AlwaysBreakAfterReturnType: None
+AlwaysBreakBeforeMultilineStrings: true
+AlwaysBreakTemplateDeclarations: Yes
+
+BinPackArguments: false
+BinPackParameters: false
+
+BreakBeforeBraces: Custom
+BraceWrapping:
+  AfterClass: true
+  AfterFunction: true
+  AfterStruct: true
+  AfterUnion: true
+  AfterCaseLabel: false
+  AfterControlStatement: Never
+  AfterEnum: false
+  AfterNamespace: false
+  AfterObjCDeclaration: false
+  AfterExternBlock: false
+  BeforeCatch: false
+  BeforeElse: false
+  BeforeLambdaBody: false
+  BeforeWhile: false
+  IndentBraces: false
+  SplitEmptyFunction: false
+  SplitEmptyNamespace: false
+  SplitEmptyRecord: false
+BreakAfterAttributes: Never
+BreakAfterJavaFieldAnnotations: true
+BreakBeforeBinaryOperators: NonAssignment
+BreakBeforeConceptDeclarations: Always
+BreakBeforeTernaryOperators: true
+BreakConstructorInitializers: BeforeColon
+BreakInheritanceList: AfterComma
+BreakStringLiterals: true
+
+ColumnLimit: 120
+
+CommentPragmas: "^ IWYU pragma:"
+
+CompactNamespaces: false
+
+ConstructorInitializerIndentWidth: 2
+PackConstructorInitializers: Never
+
+ContinuationIndentWidth: 2
+
+Cpp11BracedListStyle: false
+
+DerivePointerAlignment: false
+
+DisableFormat: false
+
+FixNamespaceComments: true
+
+ForEachMacros:
+  - foreach
+  - Q_FOREACH
+  - BOOST_FOREACH
+
+AccessModifierOffset: -2
+IndentAccessModifiers: false
+IndentCaseBlocks: false
+IndentCaseLabels: false
+IndentWidth: 2
+IndentWrappedFunctionNames: true
+
+KeepEmptyLinesAtTheStartOfBlocks: true
+
+MacroBlockBegin: ""
+MacroBlockEnd: ""
+
+MaxEmptyLinesToKeep: 2
+
+NamespaceIndentation: None
+
+PointerAlignment: Left
+
+ReflowComments: false
+
+SortIncludes: CaseInsensitive
+SortUsingDeclarations: LexicographicNumeric
+
+SpaceAfterCStyleCast: false
+SpaceAfterTemplateKeyword: false
+SpaceBeforeAssignmentOperators: true
+SpaceBeforeCpp11BracedList: false
+SpaceBeforeParens: ControlStatements
+SpacesInParens: Never
+SpacesBeforeTrailingComments: 1
+SpacesInAngles: Never
+SpacesInSquareBrackets: false
+
+TabWidth: 2
+UseTab: Never

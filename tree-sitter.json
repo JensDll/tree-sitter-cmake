@@ -1,0 +1,29 @@
+{
+  "grammars": [
+    {
+      "name": "cmake",
+      "scope": "source.cmake",
+      "file-types": ["cmake"]
+    }
+  ],
+  "metadata": {
+    "version": "0.1.0",
+    "authors": [
+      {
+        "name": "Jens Döllmann",
+        "email": "jens@doellmann.com"
+      }
+    ]
+  },
+  "bindings": {
+    "c": true,
+    "go": false,
+    "java": false,
+    "kotlin": false,
+    "node": false,
+    "python": false,
+    "rust": false,
+    "swift": false,
+    "zig": false
+  }
+}
