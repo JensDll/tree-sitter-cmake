@@ -1,9 +1,20 @@
 export default grammar({
   name: "cmake",
   extras: () => [],
-  externals: ($) => [$.unquoted_text, $.quoted_text],
+  externals: (
+    $,
+  ) => [
+    $.unquoted_text,
+    $.quoted_text,
+    $._variable_open,
+    $.normal_variable,
+    $.env_variable,
+    $.cache_variable,
+    $._variable_close,
+    $.escape_sequence,
+  ],
   rules: {
-    source_file: ($) => repeat(choice(/\s/, $.normal_command)),
+    source_file: ($) => repeat1(choice(/\s/, $.normal_command)),
 
     normal_command: ($) =>
       seq($.identifier, "(", optional($.argument_list), ")"),
@@ -14,7 +25,7 @@ export default grammar({
       choice(
         /\s/,
         $.unquoted_argument,
-        $.quoted_argument,
+        // $.quoted_argument,
         seq("(", optional($.argument_list), ")"),
       ),
 
@@ -38,15 +49,11 @@ export default grammar({
     quoted_continuation: () => "\\\n",
 
     variable: ($) =>
-      choice($.normal_variable, $.env_variable, $.cache_variable),
-    normal_variable: ($) => seq("${", optional($.variable_content), "}"),
-    env_variable: ($) => seq("$ENV{", optional($.variable_content), "}"),
-    cache_variable: ($) => seq("$CACHE{", optional($.variable_content), "}"),
-    variable_content: ($) =>
-      repeat1(choice(/[a-zA-Z0-9/_.+-]/, $.escape_sequence, $.variable)),
-
-    escape_sequence: () =>
-      choice("\\t", "\\r", "\\n", "\\;", /\\[^A-Za-z0-9;]/),
+      seq(
+        $._variable_open,
+        choice($.normal_variable, $.env_variable, $.cache_variable),
+        $._variable_close,
+      ),
 
     identifier: () => /[A-Za-z_][A-Za-z0-9_]*/,
   },
