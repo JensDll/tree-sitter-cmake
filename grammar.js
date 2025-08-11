@@ -15,7 +15,7 @@ export default grammar({
         /\s/,
         $.unquoted_argument,
         $.quoted_argument,
-        seq($.open_bracket, optional($.argument_list), $.close_bracket),
+        seq("(", optional($.argument_list), ")"),
       ),
 
     unquoted_argument: ($) =>
@@ -48,10 +48,6 @@ export default grammar({
     escape_sequence: () =>
       choice("\\t", "\\r", "\\n", "\\;", /\\[^A-Za-z0-9;]/),
 
-    open_bracket: () => "(",
-    close_bracket: () => ")",
-
     identifier: () => /[A-Za-z_][A-Za-z0-9_]*/,
-    // comment: ($) => choice(seq("#[", $.bracket_content), seq("#", /[^\n]*/)),
   },
 });

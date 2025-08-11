@@ -2,9 +2,9 @@
 basic [quoted_argument]
 =======================
 
-set("abc")
-set( "abc")
-set("abc" )
+message("abc")
+message( "abc")
+message("abc" )
 
 ---
 
@@ -29,7 +29,7 @@ set("abc" )
 empty [quoted_argument]
 ======================
 
-set("")
+message("")
 
 ---
 
@@ -43,11 +43,11 @@ set("")
 escape sequence [quoted_argument]
 =================================
 
-set("\n")
-set("a\nb")
-set(" \n")
-set("\n ")
-set("\t\r\n\;\ ")
+message("\n")
+message("a\nb")
+message(" \n")
+message("\n ")
+message("\t\r\n\;\ ")
 
 ---
 
@@ -90,11 +90,11 @@ set("\t\r\n\;\ ")
 normal variable [quoted_argument]
 =================================
 
-set("${x}")
-set("a${x}b")
-set(" ${x}")
-set("${x} ")
-set("${aA09_.+-\n\t}")
+message("${x}")
+message("a${x}b")
+message(" ${x}")
+message("${x} ")
+message("${aA09_.+-\n\t}")
 
 ---
 
@@ -145,7 +145,7 @@ set("${aA09_.+-\n\t}")
 cache variable [quoted_argument]
 ================================
 
-set("$CACHE{FOO}")
+message("$CACHE{FOO}")
 
 ---
 
@@ -162,7 +162,7 @@ set("$CACHE{FOO}")
 environment variable [quoted_argument]
 ======================================
 
-set("$ENV{FOO}")
+message("$ENV{FOO}")
 
 ---
 
@@ -179,9 +179,9 @@ set("$ENV{FOO}")
 empty variable [quoted_argument]
 ================================
 
-set("${}")
-set("$ENV{}")
-set("$CACHE{}")
+message("${}")
+message("$ENV{}")
+message("$CACHE{}")
 
 ---
 
@@ -209,7 +209,7 @@ set("$CACHE{}")
 nested variable [quoted_argument]
 =================================
 
-set("${foo$CACHE{BAR}$ENV{BA${Z}}}")
+message("${foo$CACHE{BAR}$ENV{BA${Z}}}")
 
 ---
 
@@ -235,7 +235,7 @@ set("${foo$CACHE{BAR}$ENV{BA${Z}}}")
 variable sequence [quoted_argument]
 ===================================
 
-set("${foo}${bar}${baz}$\{")
+message("${foo}${bar}${baz}$\{")
 
 ---
 
@@ -260,11 +260,11 @@ set("${foo}${bar}${baz}$\{")
 quoted continuation [quoted_argument]
 =====================================
 
-set("abc \
+message("abc \
 def xyz")
-set(   "\
+message(   "\
 x")
-set("\
+message("\
 ")
 
 ---
@@ -293,9 +293,9 @@ set("\
 lookalike variable [quoted_argument]
 ====================================
 
-set("$foo")
-set("$CACHEx")
-set("$ENV")
+message("$foo")
+message("$CACHEx")
+message("$ENV")
 
 ---
 
@@ -316,11 +316,11 @@ set("$ENV")
       (quoted_argument
         (quoted_text)))))
 
-======================
-poem [quoted_argument]
-======================
+===========================
+the raven [quoted_argument]
+===========================
 
-set("Once upon a midnight dreary,\
+message("Once upon a midnight dreary,\
 While I pondered, weak and weary,\
 Over many a quaint and ${curious}\
 Volume of forgotten lore--\
@@ -328,8 +328,8 @@ While ${I}${nodded}, ${nearly} napping,\
 Suddenly there came a tapping,\
 As of some one gently rapping,\
 Rapping at my chamber $ENV{door}.\
-\"'T is some visitor,\" I muttered,\
-\"Tapping at my chamber door\
+\"'Tis some visitor,\" I muttered,\
+\"Tapping at my chamber door--\
 $CACHE{Only} this and nothing more.\"")
 
 ---
