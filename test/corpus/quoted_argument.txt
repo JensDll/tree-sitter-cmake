@@ -13,17 +13,17 @@ message("abc" )
     (identifier)
     (argument_list
       (quoted_argument
-        (quoted_text))))
+        (text))))
   (normal_command
     (identifier)
     (argument_list
       (quoted_argument
-        (quoted_text))))
+        (text))))
   (normal_command
     (identifier)
     (argument_list
       (quoted_argument
-        (quoted_text)))))
+        (text)))))
 
 ======================
 empty [quoted_argument]
@@ -61,21 +61,21 @@ message("\t\r\n\;\ ")
     (identifier)
     (argument_list
       (quoted_argument
-        (quoted_text)
+        (text)
         (escape_sequence)
-        (quoted_text))))
+        (text))))
   (normal_command
     (identifier)
     (argument_list
       (quoted_argument
-        (quoted_text)
+        (text)
         (escape_sequence))))
   (normal_command
     (identifier)
     (argument_list
       (quoted_argument
         (escape_sequence)
-        (quoted_text))))
+        (text))))
   (normal_command
     (identifier)
     (argument_list
@@ -103,43 +103,43 @@ message("${aA09_.+-\n\t}")
     (identifier)
     (argument_list
       (quoted_argument
-        (variable
-          (normal_variable
-            (variable_content))))))
+        (normal_variable
+          (variable_content
+            (text))))))
   (normal_command
     (identifier)
     (argument_list
       (quoted_argument
-        (quoted_text)
-        (variable
-          (normal_variable
-            (variable_content)))
-        (quoted_text))))
+        (text)
+        (normal_variable
+          (variable_content
+            (text)))
+        (text))))
   (normal_command
     (identifier)
     (argument_list
       (quoted_argument
-        (quoted_text)
-        (variable
-          (normal_variable
-            (variable_content))))))
+        (text)
+        (normal_variable
+          (variable_content
+            (text))))))
   (normal_command
     (identifier)
     (argument_list
       (quoted_argument
-        (variable
-          (normal_variable
-            (variable_content)))
-        (quoted_text))))
+        (normal_variable
+          (variable_content
+            (text)))
+        (text))))
   (normal_command
     (identifier)
     (argument_list
       (quoted_argument
-        (variable
-          (normal_variable
-            (variable_content
-              (escape_sequence)
-              (escape_sequence))))))))
+        (normal_variable
+          (variable_content
+            (text)
+            (escape_sequence)
+            (escape_sequence)))))))
 
 ================================
 cache variable [quoted_argument]
@@ -154,9 +154,9 @@ message("$CACHE{FOO}")
     (identifier)
     (argument_list
       (quoted_argument
-        (variable
-          (cache_variable
-            (variable_content)))))))
+        (cache_variable
+          (variable_content
+            (text)))))))
 
 ======================================
 environment variable [quoted_argument]
@@ -171,9 +171,9 @@ message("$ENV{FOO}")
     (identifier)
     (argument_list
       (quoted_argument
-        (variable
-          (env_variable
-            (variable_content)))))))
+        (env_variable
+          (variable_content
+            (text)))))))
 
 ================================
 empty variable [quoted_argument]
@@ -190,20 +190,17 @@ message("$CACHE{}")
     (identifier)
     (argument_list
       (quoted_argument
-        (variable
-          (normal_variable)))))
+        (normal_variable))))
   (normal_command
     (identifier)
     (argument_list
       (quoted_argument
-        (variable
-          (env_variable)))))
+        (env_variable))))
   (normal_command
     (identifier)
     (argument_list
       (quoted_argument
-        (variable
-          (cache_variable))))))
+        (cache_variable)))))
 
 =================================
 nested variable [quoted_argument]
@@ -218,18 +215,18 @@ message("${foo$CACHE{BAR}$ENV{BA${Z}}}")
     (identifier)
     (argument_list
       (quoted_argument
-        (variable
-          (normal_variable
-            (variable_content
-              (variable
-                (cache_variable
-                  (variable_content)))
-              (variable
-                (env_variable
+        (normal_variable
+          (variable_content
+            (text)
+            (cache_variable
+              (variable_content
+                (text)))
+            (env_variable
+              (variable_content
+                (text)
+                (normal_variable
                   (variable_content
-                    (variable
-                      (normal_variable
-                        (variable_content)))))))))))))
+                    (text)))))))))))
 
 ===================================
 variable sequence [quoted_argument]
@@ -244,16 +241,16 @@ message("${foo}${bar}${baz}$\{")
     (identifier)
     (argument_list
       (quoted_argument
-        (variable
-          (normal_variable
-            (variable_content)))
-        (variable
-          (normal_variable
-            (variable_content)))
-        (variable
-          (normal_variable
-            (variable_content)))
-        (quoted_text)
+        (normal_variable
+          (variable_content
+            (text)))
+        (normal_variable
+          (variable_content
+            (text)))
+        (normal_variable
+          (variable_content
+            (text)))
+        (text)
         (escape_sequence)))))
 
 =====================================
@@ -274,15 +271,15 @@ message("\
     (identifier)
     (argument_list
       (quoted_argument
-        (quoted_text)
+        (text)
         (quoted_continuation)
-        (quoted_text))))
+        (text))))
   (normal_command
     (identifier)
     (argument_list
       (quoted_argument
         (quoted_continuation)
-        (quoted_text))))
+        (text))))
   (normal_command
     (identifier)
     (argument_list
@@ -304,17 +301,17 @@ message("$ENV")
     (identifier)
     (argument_list
       (quoted_argument
-        (quoted_text))))
+        (text))))
   (normal_command
     (identifier)
     (argument_list
       (quoted_argument
-        (quoted_text))))
+        (text))))
   (normal_command
     (identifier)
     (argument_list
       (quoted_argument
-        (quoted_text)))))
+        (text)))))
 
 ===========================
 the raven [quoted_argument]
@@ -339,50 +336,50 @@ $CACHE{Only} this and nothing more.\"")
     (identifier)
     (argument_list
       (quoted_argument
-        (quoted_text)
+        (text)
         (quoted_continuation)
-        (quoted_text)
+        (text)
         (quoted_continuation)
-        (quoted_text)
-        (variable
-          (normal_variable
-            (variable_content)))
+        (text)
+        (normal_variable
+          (variable_content
+            (text)))
         (quoted_continuation)
-        (quoted_text)
+        (text)
         (quoted_continuation)
-        (quoted_text)
-        (variable
-          (normal_variable
-            (variable_content)))
-        (variable
-          (normal_variable
-            (variable_content)))
-        (quoted_text)
-        (variable
-          (normal_variable
-            (variable_content)))
-        (quoted_text)
+        (text)
+        (normal_variable
+          (variable_content
+            (text)))
+        (normal_variable
+          (variable_content
+            (text)))
+        (text)
+        (normal_variable
+          (variable_content
+            (text)))
+        (text)
         (quoted_continuation)
-        (quoted_text)
+        (text)
         (quoted_continuation)
-        (quoted_text)
+        (text)
         (quoted_continuation)
-        (quoted_text)
-        (variable
-          (env_variable
-            (variable_content)))
-        (quoted_text)
-        (quoted_continuation)
-        (escape_sequence)
-        (quoted_text)
-        (escape_sequence)
-        (quoted_text)
+        (text)
+        (env_variable
+          (variable_content
+            (text)))
+        (text)
         (quoted_continuation)
         (escape_sequence)
-        (quoted_text)
+        (text)
+        (escape_sequence)
+        (text)
         (quoted_continuation)
-        (variable
-          (cache_variable
-            (variable_content)))
-        (quoted_text)
+        (escape_sequence)
+        (text)
+        (quoted_continuation)
+        (cache_variable
+          (variable_content
+            (text)))
+        (text)
         (escape_sequence)))))

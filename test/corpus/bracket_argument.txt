@@ -1,0 +1,75 @@
+=====================================
+without equal sign [bracket_argument]
+=====================================
+
+message([[a]b]=]c]])
+
+---
+
+(source_file
+  (normal_command
+    (identifier)
+    (argument_list
+      (bracket_arguemnt
+        (bracket_open)
+        (bracket_content)
+        (bracket_close)))))
+
+==================================
+with equal sign [bracket_argument]
+==================================
+
+message([===[a]==]b]====]c]===])
+
+---
+
+(source_file
+  (normal_command
+    (identifier)
+    (argument_list
+      (bracket_arguemnt
+        (bracket_open)
+        (bracket_content)
+        (bracket_close)))))
+
+==========================================
+spanning multiple lines [bracket_argument]
+==========================================
+
+message([[
+Lorem ipsum dolor sit amet consectetur adipiscing elit.
+Quisque faucibus ex sapien vitae pellentesque sem placerat.
+In id cursus mi pretium tellus duis convallis.
+Tempus leo eu aenean sed diam urna tempor.
+Pulvinar vivamus fringilla lacus nec metus bibendum egestas.
+Iaculis massa nisl malesuada lacinia integer nunc posuere.
+Ut hendrerit semper vel class aptent taciti sociosqu.
+Ad litora torquent per conubia nostra inceptos himenaeos.
+]])
+
+---
+
+(source_file
+  (normal_command
+    (identifier)
+    (argument_list
+      (bracket_arguemnt
+        (bracket_open)
+        (bracket_content)
+        (bracket_close)))))
+
+========================
+empty [bracket_argument]
+========================
+
+message([[]])
+
+---
+
+(source_file
+  (normal_command
+    (identifier)
+    (argument_list
+      (bracket_arguemnt
+        (bracket_open)
+        (bracket_close)))))

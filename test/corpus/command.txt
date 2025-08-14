@@ -1,0 +1,163 @@
+====================
+whitespace [command]
+====================
+
+message(
+ abc""
+ "abc"
+ [[abc]]
+)
+
+---
+
+(source_file
+  (normal_command
+    (identifier)
+    (argument_list
+      (unquoted_argument
+        (text))
+      (quoted_argument
+        (text))
+      (bracket_arguemnt
+        (bracket_open)
+        (bracket_content)
+        (bracket_close)))))
+
+===============================================
+unquoted variable and quoted argument [command]
+===============================================
+
+message(${x} "abc")
+
+---
+
+(source_file
+  (normal_command
+    (identifier)
+    (argument_list
+      (unquoted_argument
+        (normal_variable
+          (variable_content
+            (text))))
+      (quoted_argument
+        (text)))))
+
+===================================================================
+unquoted variable, immediate comment, and quoted argument [command]
+===================================================================
+
+message(${x}#
+"abc")
+
+---
+
+(source_file
+  (normal_command
+    (identifier)
+    (argument_list
+      (unquoted_argument
+        (normal_variable
+          (variable_content
+            (text))))
+      (comment)
+      (quoted_argument
+        (text)))))
+
+================================================
+unquoted variable and bracket argument [command]
+================================================
+
+message(${x} [[abc]])
+
+---
+
+(source_file
+  (normal_command
+    (identifier)
+    (argument_list
+      (unquoted_argument
+        (normal_variable
+          (variable_content
+            (text))))
+      (bracket_arguemnt
+        (bracket_open)
+        (bracket_content)
+        (bracket_close)))))
+
+======================================================
+unquoted escape sequence and quoted argument [command]
+======================================================
+
+message(\n "abc")
+
+---
+
+(source_file
+  (normal_command
+    (identifier)
+    (argument_list
+      (unquoted_argument
+        (escape_sequence))
+      (quoted_argument
+        (text)))))
+
+=======================================================
+unquoted escape sequence and bracket argument [command]
+=======================================================
+
+message(\n [[abc]])
+
+---
+
+(source_file
+  (normal_command
+    (identifier)
+    (argument_list
+      (unquoted_argument
+        (escape_sequence))
+      (bracket_arguemnt
+        (bracket_open)
+        (bracket_content)
+        (bracket_close)))))
+
+================================================================
+double quotes in unquoted argument and quoted argument [command]
+================================================================
+
+message(\n"" "abc")
+
+---
+
+(source_file
+  (normal_command
+    (identifier)
+    (argument_list
+      (unquoted_argument
+        (escape_sequence)
+        (text))
+      (quoted_argument
+        (text)))))
+
+====================================
+quoted argument in bracket [command]
+====================================
+
+message(${x}"" a("xyz") "")
+
+---
+
+(source_file
+  (normal_command
+    (identifier)
+    (argument_list
+      (unquoted_argument
+        (normal_variable
+          (variable_content
+            (text)))
+        (text))
+      (unquoted_argument
+        (text))
+      (argument_list
+        (quoted_argument
+          (text)))
+      (quoted_argument))))

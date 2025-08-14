@@ -1,0 +1,241 @@
+======================
+line comment [command]
+======================
+
+message(abc # abc
+[[abc]] # foo
+#bar
+)
+
+---
+
+(source_file
+  (normal_command
+    (identifier)
+    (argument_list
+      (unquoted_argument
+        (text))
+      (comment)
+      (bracket_arguemnt
+        (bracket_open)
+        (bracket_content)
+        (bracket_close))
+      (comment)
+      (comment))))
+
+============================
+empty line comment [command]
+============================
+
+message(#
+)
+
+---
+
+(source_file
+  (normal_command
+    (identifier)
+    (argument_list
+      (comment))))
+
+=========================
+bracket comment [command]
+=========================
+
+message(abc #[[ abc ]]
+[[abc]] #[[ foo ]]
+#[=[bar]=]
+)
+
+---
+
+(source_file
+  (normal_command
+    (identifier)
+    (argument_list
+      (unquoted_argument
+        (text))
+      (comment
+        (bracket_arguemnt
+          (bracket_open)
+          (bracket_content)
+          (bracket_close)))
+      (bracket_arguemnt
+        (bracket_open)
+        (bracket_content)
+        (bracket_close))
+      (comment
+        (bracket_arguemnt
+          (bracket_open)
+          (bracket_content)
+          (bracket_close)))
+      (comment
+        (bracket_arguemnt
+          (bracket_open)
+          (bracket_content)
+          (bracket_close))))))
+
+===============================
+empty bracket comment [command]
+===============================
+
+message(#[[]])
+
+---
+
+(source_file
+  (normal_command
+    (identifier)
+    (argument_list
+      (comment
+        (bracket_arguemnt
+          (bracket_open)
+          (bracket_close))))))
+
+=============================================
+comment following unquoted argument [command]
+=============================================
+
+message(abc#foo
+)
+message(abc#[[foo]])
+
+---
+
+(source_file
+  (normal_command
+    (identifier)
+    (argument_list
+      (unquoted_argument
+        (text))
+      (comment)))
+  (normal_command
+    (identifier)
+    (argument_list
+      (unquoted_argument
+        (text))
+      (comment
+        (bracket_arguemnt
+          (bracket_open)
+          (bracket_content)
+          (bracket_close))))))
+
+===========================================
+comment following escape sequence [command]
+===========================================
+
+message(\n#foo
+)
+message(\n#[[foo]])
+
+---
+
+(source_file
+  (normal_command
+    (identifier)
+    (argument_list
+      (unquoted_argument
+        (escape_sequence))
+      (comment)))
+  (normal_command
+    (identifier)
+    (argument_list
+      (unquoted_argument
+        (escape_sequence))
+      (comment
+        (bracket_arguemnt
+          (bracket_open)
+          (bracket_content)
+          (bracket_close))))))
+
+====================================
+comment following variable [command]
+====================================
+
+message(${x}#foo
+)
+message(${x}#[[foo]])
+
+---
+
+(source_file
+  (normal_command
+    (identifier)
+    (argument_list
+      (unquoted_argument
+        (normal_variable
+          (variable_content
+            (text))))
+      (comment)))
+  (normal_command
+    (identifier)
+    (argument_list
+      (unquoted_argument
+        (normal_variable
+          (variable_content
+            (text))))
+      (comment
+        (bracket_arguemnt
+          (bracket_open)
+          (bracket_content)
+          (bracket_close))))))
+
+===========================================
+comment following quoted argument [command]
+===========================================
+
+message("abc"#foo
+)
+message("abc"#[[foo]])
+
+---
+
+(source_file
+  (normal_command
+    (identifier)
+    (argument_list
+      (quoted_argument
+        (text))
+      (comment)))
+  (normal_command
+    (identifier)
+    (argument_list
+      (quoted_argument
+        (text))
+      (comment
+        (bracket_arguemnt
+          (bracket_open)
+          (bracket_content)
+          (bracket_close))))))
+
+============================================
+comment following bracket argument [command]
+============================================
+
+message([[abc]]#foo
+)
+message([[abc]]#[[foo]])
+
+---
+
+(source_file
+  (normal_command
+    (identifier)
+    (argument_list
+      (bracket_arguemnt
+        (bracket_open)
+        (bracket_content)
+        (bracket_close))
+      (comment)))
+  (normal_command
+    (identifier)
+    (argument_list
+      (bracket_arguemnt
+        (bracket_open)
+        (bracket_content)
+        (bracket_close))
+      (comment
+        (bracket_arguemnt
+          (bracket_open)
+          (bracket_content)
+          (bracket_close))))))

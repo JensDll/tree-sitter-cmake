@@ -1,0 +1,403 @@
+=========================
+basic [unquoted_argument]
+=========================
+
+message(abc)
+message( abc)
+message(abc )
+
+---
+
+(source_file
+  (normal_command
+    (identifier)
+    (argument_list
+      (unquoted_argument
+        (text))))
+  (normal_command
+    (identifier)
+    (argument_list
+      (unquoted_argument
+        (text))))
+  (normal_command
+    (identifier)
+    (argument_list
+      (unquoted_argument
+        (text)))))
+
+=========================
+empty [unquoted_argument]
+=========================
+
+message()
+
+---
+
+(source_file
+  (normal_command
+    (identifier)))
+
+===================================
+escape sequence [unquoted_argument]
+===================================
+
+message(\n)
+message(a\nb)
+message( \n)
+message(\n )
+message(\t\r\n\;\ abc)
+
+---
+
+(source_file
+  (normal_command
+    (identifier)
+    (argument_list
+      (unquoted_argument
+        (escape_sequence))))
+  (normal_command
+    (identifier)
+    (argument_list
+      (unquoted_argument
+        (text)
+        (escape_sequence)
+        (text))))
+  (normal_command
+    (identifier)
+    (argument_list
+      (unquoted_argument
+        (escape_sequence))))
+  (normal_command
+    (identifier)
+    (argument_list
+      (unquoted_argument
+        (escape_sequence))))
+  (normal_command
+    (identifier)
+    (argument_list
+      (unquoted_argument
+        (escape_sequence)
+        (escape_sequence)
+        (escape_sequence)
+        (escape_sequence)
+        (escape_sequence)
+        (text)))))
+
+===================================
+normal variable [unquoted_argument]
+===================================
+
+message(${x})
+message(a${x}b)
+message( ${x})
+message(${x} )
+message(${aA09_.+-\n\t})
+
+---
+
+(source_file
+  (normal_command
+    (identifier)
+    (argument_list
+      (unquoted_argument
+        (normal_variable
+          (variable_content
+            (text))))))
+  (normal_command
+    (identifier)
+    (argument_list
+      (unquoted_argument
+        (text)
+        (normal_variable
+          (variable_content
+            (text)))
+        (text))))
+  (normal_command
+    (identifier)
+    (argument_list
+      (unquoted_argument
+        (normal_variable
+          (variable_content
+            (text))))))
+  (normal_command
+    (identifier)
+    (argument_list
+      (unquoted_argument
+        (normal_variable
+          (variable_content
+            (text))))))
+  (normal_command
+    (identifier)
+    (argument_list
+      (unquoted_argument
+        (normal_variable
+          (variable_content
+            (text)
+            (escape_sequence)
+            (escape_sequence)))))))
+
+==================================
+cache variable [unquoted_argument]
+==================================
+
+message($CACHE{FOO})
+
+---
+
+(source_file
+  (normal_command
+    (identifier)
+    (argument_list
+      (unquoted_argument
+        (cache_variable
+          (variable_content
+            (text)))))))
+
+========================================
+environment variable [unquoted_argument]
+========================================
+
+message($ENV{FOO})
+
+---
+
+(source_file
+  (normal_command
+    (identifier)
+    (argument_list
+      (unquoted_argument
+        (env_variable
+          (variable_content
+            (text)))))))
+
+==================================
+empty variable [unquoted_argument]
+==================================
+
+message(${})
+message($ENV{})
+message($CACHE{})
+
+---
+
+(source_file
+  (normal_command
+    (identifier)
+    (argument_list
+      (unquoted_argument
+        (normal_variable))))
+  (normal_command
+    (identifier)
+    (argument_list
+      (unquoted_argument
+        (env_variable))))
+  (normal_command
+    (identifier)
+    (argument_list
+      (unquoted_argument
+        (cache_variable)))))
+
+===================================
+nested variable [unquoted_argument]
+===================================
+
+message(${foo$CACHE{BAR}$ENV{BA${Z}}})
+
+---
+
+(source_file
+  (normal_command
+    (identifier)
+    (argument_list
+      (unquoted_argument
+        (normal_variable
+          (variable_content
+            (text)
+            (cache_variable
+              (variable_content
+                (text)))
+            (env_variable
+              (variable_content
+                (text)
+                (normal_variable
+                  (variable_content
+                    (text)))))))))))
+
+=====================================
+variable sequence [unquoted_argument]
+=====================================
+
+message(${foo}${bar}${baz}$\{)
+
+---
+
+(source_file
+  (normal_command
+    (identifier)
+    (argument_list
+      (unquoted_argument
+        (normal_variable
+          (variable_content
+            (text)))
+        (normal_variable
+          (variable_content
+            (text)))
+        (normal_variable
+          (variable_content
+            (text)))
+        (text)
+        (escape_sequence)))))
+
+======================================
+lookalike variable [unquoted_argument]
+======================================
+
+message($foo)
+message($CACHEx)
+message($ENV)
+
+---
+
+(source_file
+  (normal_command
+    (identifier)
+    (argument_list
+      (unquoted_argument
+        (text))))
+  (normal_command
+    (identifier)
+    (argument_list
+      (unquoted_argument
+        (text))))
+  (normal_command
+    (identifier)
+    (argument_list
+      (unquoted_argument
+        (text)))))
+
+===================================
+square brackets [unquoted_argument]
+===================================
+
+message(a(b)c)
+message(())
+
+---
+
+(source_file
+  (normal_command
+    (identifier)
+    (argument_list
+      (unquoted_argument
+        (text))
+      (argument_list
+        (unquoted_argument
+          (text)))
+      (unquoted_argument
+        (text))))
+  (normal_command
+    (identifier)
+    (argument_list)))
+
+==============================================
+double quotes after letter [unquoted_argument]
+==============================================
+
+message(a"bc")
+
+---
+
+(source_file
+  (normal_command
+    (identifier)
+    (argument_list
+      (unquoted_argument
+        (text)))))
+
+================================================
+double quotes after variable [unquoted_argument]
+================================================
+
+message(${a}"b")
+
+---
+
+(source_file
+  (normal_command
+    (identifier)
+    (argument_list
+      (unquoted_argument
+        (normal_variable
+          (variable_content
+            (text)))
+        (text)))))
+
+=======================================================
+double quotes after escape sequence [unquoted_argument]
+=======================================================
+
+message(\ "a"\ "")
+
+---
+
+(source_file
+  (normal_command
+    (identifier)
+    (argument_list
+      (unquoted_argument
+        (escape_sequence)
+        (text)
+        (escape_sequence)
+        (text)))))
+
+=================================================
+bracket argument after letter [unquoted_argument]
+=================================================
+
+message(a[[b]])
+
+---
+
+(source_file
+  (normal_command
+    (identifier)
+    (argument_list
+      (unquoted_argument
+        (text)))))
+
+===================================================
+bracket argument after variable [unquoted_argument]
+===================================================
+
+message(${a}[[b]])
+
+---
+
+(source_file
+  (normal_command
+    (identifier)
+    (argument_list
+      (unquoted_argument
+        (normal_variable
+          (variable_content
+            (text)))
+        (text)))))
+
+==========================================================
+bracket argument after escape sequence [unquoted_argument]
+==========================================================
+
+message(\ [[a]]\ [[]])
+
+---
+
+(source_file
+  (normal_command
+    (identifier)
+    (argument_list
+      (unquoted_argument
+        (escape_sequence)
+        (text)
+        (escape_sequence)
+        (text)))))
+
