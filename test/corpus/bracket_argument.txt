@@ -7,7 +7,7 @@ message([[a]b]=]c]])
 ---
 
 (source_file
-  (normal_command
+  (command
     (identifier)
     (argument_list
       (bracket_arguemnt
@@ -24,7 +24,7 @@ message([===[a]==]b]====]c]===])
 ---
 
 (source_file
-  (normal_command
+  (command
     (identifier)
     (argument_list
       (bracket_arguemnt
@@ -50,7 +50,7 @@ Ad litora torquent per conubia nostra inceptos himenaeos.
 ---
 
 (source_file
-  (normal_command
+  (command
     (identifier)
     (argument_list
       (bracket_arguemnt
@@ -67,7 +67,7 @@ message([[]])
 ---
 
 (source_file
-  (normal_command
+  (command
     (identifier)
     (argument_list
       (bracket_arguemnt

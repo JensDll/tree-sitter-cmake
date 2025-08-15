@@ -1,0 +1,272 @@
+=======
+if [if]
+=======
+
+if()
+endif()
+
+---
+
+(source_file
+  (if
+    (if_command)
+    (body)
+    (endif_command)))
+
+===============
+if, elseif [if]
+===============
+
+if()
+elseif()
+endif()
+
+---
+
+(source_file
+  (if
+    (if_command)
+    (body)
+    (elseif_command)
+    (body)
+    (endif_command)))
+
+=====================
+if, elseif, else [if]
+=====================
+
+if()
+elseif()
+else()
+endif()
+
+---
+
+(source_file
+  (if
+    (if_command)
+    (body)
+    (elseif_command)
+    (body)
+    (else_command)
+    (body)
+    (endif_command)))
+
+=======================
+if, elseif, elseif [if]
+=======================
+
+if()
+elseif()
+elseif()
+endif()
+
+---
+
+(source_file
+  (if
+    (if_command)
+    (body)
+    (elseif_command)
+    (body)
+    (elseif_command)
+    (body)
+    (endif_command)))
+
+=============================
+if, elseif, elseif, else [if]
+=============================
+
+if()
+elseif()
+elseif()
+else()
+endif()
+
+---
+
+(source_file
+  (if
+    (if_command)
+    (body)
+    (elseif_command)
+    (body)
+    (elseif_command)
+    (body)
+    (else_command)
+    (body)
+    (endif_command)))
+
+============
+if body [if]
+============
+
+if(TARGET t)
+  message(STATUS abc)
+  # foo
+endif()
+
+---
+
+(source_file
+  (if
+    (if_command
+      (argument_list
+        (unquoted_argument
+          (text))
+        (unquoted_argument
+          (text))))
+    (body
+      (command
+        (identifier)
+        (argument_list
+          (unquoted_argument
+            (text))
+          (unquoted_argument
+            (text))))
+      (comment))
+    (endif_command)))
+
+================
+elseif body [if]
+================
+
+if()
+elseif(${x})
+  #[[ body ]]
+endif()
+
+---
+
+(source_file
+  (if
+    (if_command)
+    (body)
+    (elseif_command
+      (argument_list
+        (unquoted_argument
+          (normal_variable
+            (variable_content
+              (text))))))
+    (body
+      (comment
+        (bracket_arguemnt
+          (bracket_open)
+          (bracket_content)
+          (bracket_close))))
+    (endif_command)))
+
+==============
+else body [if]
+==============
+
+if()
+else(foo)
+  bar()
+endif()
+
+---
+
+(source_file
+  (if
+    (if_command)
+    (body)
+    (else_command
+      (argument_list
+        (unquoted_argument
+          (text))))
+    (body
+      (command
+        (identifier)))
+    (endif_command)))
+
+==================================
+whitespace after command name [if]
+==================================
+
+if  ()
+elseif ()
+else ()
+endif ()
+
+---
+
+(source_file
+  (if
+    (if_command)
+    (body)
+    (elseif_command)
+    (body)
+    (else_command)
+    (body)
+    (endif_command)))
+
+==============
+arguments [if]
+==============
+
+if((condition) AND (condition OR (condition)))
+elseif(TARGET foo)
+else(DEFINED bar)
+endif(
+# done
+)
+
+---
+
+(source_file
+  (if
+    (if_command
+      (argument_list
+        (argument_list
+          (unquoted_argument
+            (text)))
+        (unquoted_argument
+          (text))
+        (argument_list
+          (unquoted_argument
+            (text))
+          (unquoted_argument
+            (text))
+          (argument_list
+            (unquoted_argument
+              (text))))))
+    (body)
+    (elseif_command
+      (argument_list
+        (unquoted_argument
+          (text))
+        (unquoted_argument
+          (text))))
+    (body)
+    (else_command
+      (argument_list
+        (unquoted_argument
+          (text))
+        (unquoted_argument
+          (text))))
+    (body)
+    (endif_command
+      (argument_list
+        (comment)))))
+
+=====================
+case insensitive [if]
+=====================
+
+iF()
+ELSEif()
+eLsE()
+ENDIF()
+
+---
+
+(source_file
+  (if
+    (if_command)
+    (body)
+    (elseif_command)
+    (body)
+    (else_command)
+    (body)
+    (endif_command)))

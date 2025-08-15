@@ -1,0 +1,167 @@
+=============
+macro [macro]
+=============
+
+macro()
+endmacro()
+
+---
+
+(source_file
+  (macro
+    (macro_command)
+    (body)
+    (endmacro_command)))
+
+=====================================
+whitespace after command name [macro]
+=====================================
+
+macro ()
+endmacro ()
+
+---
+
+(source_file
+  (macro
+    (macro_command)
+    (body)
+    (endmacro_command)))
+
+========================
+case insensitive [macro]
+========================
+
+mACRo()
+endMACRO()
+
+---
+
+(source_file
+  (macro
+    (macro_command)
+    (body)
+    (endmacro_command)))
+
+============
+body [macro]
+============
+
+macro()
+  # body
+  message(STATUS body)
+endmacro()
+
+---
+
+(source_file
+  (macro
+    (macro_command)
+    (body
+      (comment)
+      (command
+        (identifier)
+        (argument_list
+          (unquoted_argument
+            (text))
+          (unquoted_argument
+            (text)))))
+    (endmacro_command)))
+
+=================
+arguments [macro]
+=================
+
+macro(configure_sanitizers)
+  set(p ${CMAKE_CURRENT_FUNCTION})
+  set(options DIRECTORY)
+  set(
+    single_value_args
+    ADDRESS
+    LEAK
+    UNDEFINED
+    MEMORY
+    THREAD
+    TARGET
+  )
+  set(multi_value_args)
+  cmake_parse_arguments(PARSE_ARGV 0 ${p} "${options}" "${single_value_args}" "${multi_value_args}")
+endmacro(#[==[ end ]==])
+
+---
+
+(source_file
+  (macro
+    (macro_command
+      (argument_list
+        (unquoted_argument
+          (text))))
+    (body
+      (command
+        (identifier)
+        (argument_list
+          (unquoted_argument
+            (text))
+          (unquoted_argument
+            (normal_variable
+              (variable_content
+                (text))))))
+      (command
+        (identifier)
+        (argument_list
+          (unquoted_argument
+            (text))
+          (unquoted_argument
+            (text))))
+      (command
+        (identifier)
+        (argument_list
+          (unquoted_argument
+            (text))
+          (unquoted_argument
+            (text))
+          (unquoted_argument
+            (text))
+          (unquoted_argument
+            (text))
+          (unquoted_argument
+            (text))
+          (unquoted_argument
+            (text))
+          (unquoted_argument
+            (text))))
+      (command
+        (identifier)
+        (argument_list
+          (unquoted_argument
+            (text))))
+      (command
+        (identifier)
+        (argument_list
+          (unquoted_argument
+            (text))
+          (unquoted_argument
+            (text))
+          (unquoted_argument
+            (normal_variable
+              (variable_content
+                (text))))
+          (quoted_argument
+            (normal_variable
+              (variable_content
+                (text))))
+          (quoted_argument
+            (normal_variable
+              (variable_content
+                (text))))
+          (quoted_argument
+            (normal_variable
+              (variable_content
+                (text)))))))
+    (endmacro_command
+      (argument_list
+        (comment
+          (bracket_arguemnt
+            (bracket_open)
+            (bracket_content)
+            (bracket_close)))))))

@@ -9,17 +9,17 @@ message(abc )
 ---
 
 (source_file
-  (normal_command
+  (command
     (identifier)
     (argument_list
       (unquoted_argument
         (text))))
-  (normal_command
+  (command
     (identifier)
     (argument_list
       (unquoted_argument
         (text))))
-  (normal_command
+  (command
     (identifier)
     (argument_list
       (unquoted_argument
@@ -34,7 +34,7 @@ message()
 ---
 
 (source_file
-  (normal_command
+  (command
     (identifier)))
 
 ===================================
@@ -50,29 +50,29 @@ message(\t\r\n\;\ abc)
 ---
 
 (source_file
-  (normal_command
+  (command
     (identifier)
     (argument_list
       (unquoted_argument
         (escape_sequence))))
-  (normal_command
+  (command
     (identifier)
     (argument_list
       (unquoted_argument
         (text)
         (escape_sequence)
         (text))))
-  (normal_command
+  (command
     (identifier)
     (argument_list
       (unquoted_argument
         (escape_sequence))))
-  (normal_command
+  (command
     (identifier)
     (argument_list
       (unquoted_argument
         (escape_sequence))))
-  (normal_command
+  (command
     (identifier)
     (argument_list
       (unquoted_argument
@@ -96,14 +96,14 @@ message(${aA09_.+-\n\t})
 ---
 
 (source_file
-  (normal_command
+  (command
     (identifier)
     (argument_list
       (unquoted_argument
         (normal_variable
           (variable_content
             (text))))))
-  (normal_command
+  (command
     (identifier)
     (argument_list
       (unquoted_argument
@@ -112,21 +112,21 @@ message(${aA09_.+-\n\t})
           (variable_content
             (text)))
         (text))))
-  (normal_command
+  (command
     (identifier)
     (argument_list
       (unquoted_argument
         (normal_variable
           (variable_content
             (text))))))
-  (normal_command
+  (command
     (identifier)
     (argument_list
       (unquoted_argument
         (normal_variable
           (variable_content
             (text))))))
-  (normal_command
+  (command
     (identifier)
     (argument_list
       (unquoted_argument
@@ -145,7 +145,7 @@ message($CACHE{FOO})
 ---
 
 (source_file
-  (normal_command
+  (command
     (identifier)
     (argument_list
       (unquoted_argument
@@ -162,7 +162,7 @@ message($ENV{FOO})
 ---
 
 (source_file
-  (normal_command
+  (command
     (identifier)
     (argument_list
       (unquoted_argument
@@ -181,17 +181,17 @@ message($CACHE{})
 ---
 
 (source_file
-  (normal_command
+  (command
     (identifier)
     (argument_list
       (unquoted_argument
         (normal_variable))))
-  (normal_command
+  (command
     (identifier)
     (argument_list
       (unquoted_argument
         (env_variable))))
-  (normal_command
+  (command
     (identifier)
     (argument_list
       (unquoted_argument
@@ -206,7 +206,7 @@ message(${foo$CACHE{BAR}$ENV{BA${Z}}})
 ---
 
 (source_file
-  (normal_command
+  (command
     (identifier)
     (argument_list
       (unquoted_argument
@@ -232,7 +232,7 @@ message(${foo}${bar}${baz}$\{)
 ---
 
 (source_file
-  (normal_command
+  (command
     (identifier)
     (argument_list
       (unquoted_argument
@@ -259,17 +259,17 @@ message($ENV)
 ---
 
 (source_file
-  (normal_command
+  (command
     (identifier)
     (argument_list
       (unquoted_argument
         (text))))
-  (normal_command
+  (command
     (identifier)
     (argument_list
       (unquoted_argument
         (text))))
-  (normal_command
+  (command
     (identifier)
     (argument_list
       (unquoted_argument
@@ -285,7 +285,7 @@ message(())
 ---
 
 (source_file
-  (normal_command
+  (command
     (identifier)
     (argument_list
       (unquoted_argument
@@ -295,7 +295,7 @@ message(())
           (text)))
       (unquoted_argument
         (text))))
-  (normal_command
+  (command
     (identifier)
     (argument_list)))
 
@@ -308,7 +308,7 @@ message(a"bc")
 ---
 
 (source_file
-  (normal_command
+  (command
     (identifier)
     (argument_list
       (unquoted_argument
@@ -323,7 +323,7 @@ message(${a}"b")
 ---
 
 (source_file
-  (normal_command
+  (command
     (identifier)
     (argument_list
       (unquoted_argument
@@ -341,7 +341,7 @@ message(\ "a"\ "")
 ---
 
 (source_file
-  (normal_command
+  (command
     (identifier)
     (argument_list
       (unquoted_argument
@@ -359,7 +359,7 @@ message(a[[b]])
 ---
 
 (source_file
-  (normal_command
+  (command
     (identifier)
     (argument_list
       (unquoted_argument
@@ -374,7 +374,7 @@ message(${a}[[b]])
 ---
 
 (source_file
-  (normal_command
+  (command
     (identifier)
     (argument_list
       (unquoted_argument
@@ -392,7 +392,7 @@ message(\ [[a]]\ [[]])
 ---
 
 (source_file
-  (normal_command
+  (command
     (identifier)
     (argument_list
       (unquoted_argument
@@ -400,4 +400,3 @@ message(\ [[a]]\ [[]])
         (text)
         (escape_sequence)
         (text)))))
-

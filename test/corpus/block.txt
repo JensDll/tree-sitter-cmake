@@ -1,0 +1,145 @@
+=============
+block [block]
+=============
+
+block()
+endblock()
+
+---
+
+(source_file
+  (block
+    (block_command)
+    (body)
+    (endblock_command)))
+
+=====================================
+whitespace after command name [block]
+=====================================
+
+block ()
+endblock ()
+
+---
+
+(source_file
+  (block
+    (block_command)
+    (body)
+    (endblock_command)))
+
+========================
+case insensitive [block]
+========================
+
+bLock()
+eNdBLOck()
+
+---
+
+(source_file
+  (block
+    (block_command)
+    (body)
+    (endblock_command)))
+
+============
+body [block]
+============
+
+block()
+  # body
+  message(STATUS body)
+endblock()
+
+---
+
+(source_file
+  (block
+    (block_command)
+    (body
+      (comment)
+      (command
+        (identifier)
+        (argument_list
+          (unquoted_argument
+            (text))
+          (unquoted_argument
+            (text)))))
+    (endblock_command)))
+
+=================
+arguments [block]
+=================
+
+set(var1 "INIT1")
+set(var2 "INIT2")
+set(var3 "INIT3")
+
+block(PROPAGATE var1 var2)
+  set(var1 "VALUE1")
+  unset(var2)
+  set(var3 "VALUE3")
+endblock(
+# end
+)
+
+# Now var1 holds VALUE1, var2 is unset, and var3 holds the initial value INIT3
+
+---
+
+(source_file
+  (command
+    (identifier)
+    (argument_list
+      (unquoted_argument
+        (text))
+      (quoted_argument
+        (text))))
+  (command
+    (identifier)
+    (argument_list
+      (unquoted_argument
+        (text))
+      (quoted_argument
+        (text))))
+  (command
+    (identifier)
+    (argument_list
+      (unquoted_argument
+        (text))
+      (quoted_argument
+        (text))))
+  (block
+    (block_command
+      (argument_list
+        (unquoted_argument
+          (text))
+        (unquoted_argument
+          (text))
+        (unquoted_argument
+          (text))))
+    (body
+      (command
+        (identifier)
+        (argument_list
+          (unquoted_argument
+            (text))
+          (quoted_argument
+            (text))))
+      (command
+        (identifier)
+        (argument_list
+          (unquoted_argument
+            (text))))
+      (command
+        (identifier)
+        (argument_list
+          (unquoted_argument
+            (text))
+          (quoted_argument
+            (text)))))
+    (endblock_command
+      (argument_list
+        (comment))))
+  (comment))

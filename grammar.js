@@ -1,3 +1,5 @@
+const zero_or_more_horizontal_whitespace = /[^\S\r\n]*/;
+
 export default grammar({
   name: "cmake",
   extras: () => [],
@@ -18,15 +20,79 @@ export default grammar({
     $.bracket_close,
     $.error_sentinel,
   ],
-  inline: ($) => [$.variable],
+  inline: ($) => [$.variable, $.arguments],
   rules: {
-    source_file: ($) => repeat1(choice(/\s/, $.normal_command)),
+    source_file: ($) => repeat($._statement),
 
-    normal_command: ($) =>
-      seq($.identifier, "(", optional($.argument_list), ")"),
+    body: ($) => repeat1($._statement),
 
+    _statement: ($) =>
+      choice(
+        /\s/,
+        $.if,
+        $.foreach,
+        $.while,
+        $.function,
+        $.macro,
+        $.block,
+        $.command,
+        $.comment,
+      ),
+
+    if: ($) =>
+      seq(
+        $.if_command,
+        optional($.body),
+        repeat(seq($.elseif_command, optional($.body))),
+        optional(seq($.else_command, optional($.body))),
+        $.endif_command,
+      ),
+    if_command: ($) =>
+      seq(/if/i, zero_or_more_horizontal_whitespace, $.arguments),
+    elseif_command: ($) =>
+      seq(/elseif/i, zero_or_more_horizontal_whitespace, $.arguments),
+    else_command: ($) =>
+      seq(/else/i, zero_or_more_horizontal_whitespace, $.arguments),
+    endif_command: ($) =>
+      seq(/endif/i, zero_or_more_horizontal_whitespace, $.arguments),
+
+    foreach: ($) =>
+      seq($.foreach_command, optional($.body), $.endforeach_command),
+    foreach_command: ($) =>
+      seq(/foreach/i, zero_or_more_horizontal_whitespace, $.arguments),
+    endforeach_command: ($) =>
+      seq(/endforeach/i, zero_or_more_horizontal_whitespace, $.arguments),
+
+    while: ($) => seq($.while_command, optional($.body), $.endwhile_command),
+    while_command: ($) =>
+      seq(/while/i, zero_or_more_horizontal_whitespace, $.arguments),
+    endwhile_command: ($) =>
+      seq(/endwhile/i, zero_or_more_horizontal_whitespace, $.arguments),
+
+    function: ($) =>
+      seq($.function_command, optional($.body), $.endfunction_command),
+    function_command: ($) =>
+      seq(/function/i, zero_or_more_horizontal_whitespace, $.arguments),
+    endfunction_command: ($) =>
+      seq(/endfunction/i, zero_or_more_horizontal_whitespace, $.arguments),
+
+    macro: ($) => seq($.macro_command, optional($.body), $.endmacro_command),
+    macro_command: ($) =>
+      seq(/macro/i, zero_or_more_horizontal_whitespace, $.arguments),
+    endmacro_command: ($) =>
+      seq(/endmacro/i, zero_or_more_horizontal_whitespace, $.arguments),
+
+    block: ($) => seq($.block_command, optional($.body), $.endblock_command),
+    block_command: ($) =>
+      seq(/block/i, zero_or_more_horizontal_whitespace, $.arguments),
+    endblock_command: ($) =>
+      seq(/endblock/i, zero_or_more_horizontal_whitespace, $.arguments),
+
+    command: ($) =>
+      seq($.identifier, zero_or_more_horizontal_whitespace, $.arguments),
+
+    arguments: ($) => seq("(", optional($.argument_list), ")"),
     argument_list: ($) => repeat1($._argument),
-
     _argument: ($) =>
       choice(
         /\s/,
@@ -34,7 +100,7 @@ export default grammar({
         $.unquoted_argument,
         $.quoted_argument,
         $.bracket_arguemnt,
-        seq("(", optional($.argument_list), ")"),
+        $.arguments,
       ),
 
     unquoted_argument: ($) =>
@@ -61,7 +127,6 @@ export default grammar({
 
     variable: ($) =>
       choice($.normal_variable, $.env_variable, $.cache_variable),
-
     normal_variable: ($) =>
       seq(
         $._normal_variable_open,
@@ -80,7 +145,6 @@ export default grammar({
         optional($.variable_content),
         $._variable_close,
       ),
-
     variable_content: ($) =>
       repeat1(
         choice(alias($.variable_text, $.text), $.escape_sequence, $.variable),
@@ -88,6 +152,6 @@ export default grammar({
 
     identifier: () => /[A-Za-z_][A-Za-z0-9_]*/,
 
-    comment: ($) => choice(seq("#", choice($.bracket_arguemnt, /[^\n]*/))),
+    comment: ($) => choice(seq("#", choice($.bracket_arguemnt, /[^\r\n]*/))),
   },
 });

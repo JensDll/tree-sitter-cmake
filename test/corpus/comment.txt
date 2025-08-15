@@ -1,5 +1,5 @@
 ======================
-line comment [command]
+line comment [comment]
 ======================
 
 message(abc # abc
@@ -10,7 +10,7 @@ message(abc # abc
 ---
 
 (source_file
-  (normal_command
+  (command
     (identifier)
     (argument_list
       (unquoted_argument
@@ -24,7 +24,7 @@ message(abc # abc
       (comment))))
 
 ============================
-empty line comment [command]
+empty line comment [comment]
 ============================
 
 message(#
@@ -33,13 +33,13 @@ message(#
 ---
 
 (source_file
-  (normal_command
+  (command
     (identifier)
     (argument_list
       (comment))))
 
 =========================
-bracket comment [command]
+bracket comment [comment]
 =========================
 
 message(abc #[[ abc ]]
@@ -50,7 +50,7 @@ message(abc #[[ abc ]]
 ---
 
 (source_file
-  (normal_command
+  (command
     (identifier)
     (argument_list
       (unquoted_argument
@@ -76,7 +76,7 @@ message(abc #[[ abc ]]
           (bracket_close))))))
 
 ===============================
-empty bracket comment [command]
+empty bracket comment [comment]
 ===============================
 
 message(#[[]])
@@ -84,7 +84,7 @@ message(#[[]])
 ---
 
 (source_file
-  (normal_command
+  (command
     (identifier)
     (argument_list
       (comment
@@ -93,7 +93,7 @@ message(#[[]])
           (bracket_close))))))
 
 =============================================
-comment following unquoted argument [command]
+comment following unquoted argument [comment]
 =============================================
 
 message(abc#foo
@@ -103,13 +103,13 @@ message(abc#[[foo]])
 ---
 
 (source_file
-  (normal_command
+  (command
     (identifier)
     (argument_list
       (unquoted_argument
         (text))
       (comment)))
-  (normal_command
+  (command
     (identifier)
     (argument_list
       (unquoted_argument
@@ -121,7 +121,7 @@ message(abc#[[foo]])
           (bracket_close))))))
 
 ===========================================
-comment following escape sequence [command]
+comment following escape sequence [comment]
 ===========================================
 
 message(\n#foo
@@ -131,13 +131,13 @@ message(\n#[[foo]])
 ---
 
 (source_file
-  (normal_command
+  (command
     (identifier)
     (argument_list
       (unquoted_argument
         (escape_sequence))
       (comment)))
-  (normal_command
+  (command
     (identifier)
     (argument_list
       (unquoted_argument
@@ -149,7 +149,7 @@ message(\n#[[foo]])
           (bracket_close))))))
 
 ====================================
-comment following variable [command]
+comment following variable [comment]
 ====================================
 
 message(${x}#foo
@@ -159,7 +159,7 @@ message(${x}#[[foo]])
 ---
 
 (source_file
-  (normal_command
+  (command
     (identifier)
     (argument_list
       (unquoted_argument
@@ -167,7 +167,7 @@ message(${x}#[[foo]])
           (variable_content
             (text))))
       (comment)))
-  (normal_command
+  (command
     (identifier)
     (argument_list
       (unquoted_argument
@@ -181,7 +181,7 @@ message(${x}#[[foo]])
           (bracket_close))))))
 
 ===========================================
-comment following quoted argument [command]
+comment following quoted argument [comment]
 ===========================================
 
 message("abc"#foo
@@ -191,13 +191,13 @@ message("abc"#[[foo]])
 ---
 
 (source_file
-  (normal_command
+  (command
     (identifier)
     (argument_list
       (quoted_argument
         (text))
       (comment)))
-  (normal_command
+  (command
     (identifier)
     (argument_list
       (quoted_argument
@@ -209,7 +209,7 @@ message("abc"#[[foo]])
           (bracket_close))))))
 
 ============================================
-comment following bracket argument [command]
+comment following bracket argument [comment]
 ============================================
 
 message([[abc]]#foo
@@ -219,7 +219,7 @@ message([[abc]]#[[foo]])
 ---
 
 (source_file
-  (normal_command
+  (command
     (identifier)
     (argument_list
       (bracket_arguemnt
@@ -227,7 +227,7 @@ message([[abc]]#[[foo]])
         (bracket_content)
         (bracket_close))
       (comment)))
-  (normal_command
+  (command
     (identifier)
     (argument_list
       (bracket_arguemnt
@@ -239,3 +239,20 @@ message([[abc]]#[[foo]])
           (bracket_open)
           (bracket_content)
           (bracket_close))))))
+
+====================================
+comment outside of command [comment]
+====================================
+
+# line comment
+#[[ block comment ]]
+
+---
+
+(source_file
+  (comment)
+  (comment
+    (bracket_arguemnt
+      (bracket_open)
+      (bracket_content)
+      (bracket_close))))

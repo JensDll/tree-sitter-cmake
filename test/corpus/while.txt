@@ -1,0 +1,101 @@
+=============
+while [while]
+=============
+
+while()
+endwhile()
+
+---
+
+(source_file
+  (while
+    (while_command)
+    (body)
+    (endwhile_command)))
+
+=====================================
+whitespace after command name [while]
+=====================================
+
+while ()
+endwhile ()
+
+---
+
+(source_file
+  (while
+    (while_command)
+    (body)
+    (endwhile_command)))
+
+========================
+case insensitive [while]
+========================
+
+wHIlE()
+ENDwHILE()
+
+---
+
+(source_file
+  (while
+    (while_command)
+    (body)
+    (endwhile_command)))
+
+============
+body [while]
+============
+
+while()
+  # body
+  message(STATUS body)
+endwhile()
+
+---
+
+(source_file
+  (while
+    (while_command)
+    (body
+      (comment)
+      (command
+        (identifier)
+        (argument_list
+          (unquoted_argument
+            (text))
+          (unquoted_argument
+            (text)))))
+    (endwhile_command)))
+
+=================
+arguments [while]
+=================
+
+while(ON)
+  message(STATUS ...)
+endwhile(#[==[ end ]==])
+
+---
+
+(source_file
+  (while
+    (while_command
+      (argument_list
+        (unquoted_argument
+          (text))))
+    (body
+      (command
+        (identifier)
+        (argument_list
+          (unquoted_argument
+            (text))
+          (unquoted_argument
+            (text)))))
+    (endwhile_command
+      (argument_list
+        (comment
+          (bracket_arguemnt
+            (bracket_open)
+            (bracket_content)
+            (bracket_close)))))))

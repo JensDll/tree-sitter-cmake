@@ -25,7 +25,7 @@ typedef enum TokenType {
 
 typedef struct State
 {
-  unsigned int open_count;
+  unsigned short open_count;
   bool unquoted_argument_active;
 } State;
 
@@ -270,7 +270,7 @@ static bool scan_bracket_open(TSLexer* const lexer, State* const state)
   if (is_bracket_open(lexer, &open_count)) {
     lexer->advance(lexer, false);
     lexer->result_symbol = BRACKET_OPEN;
-    state->open_count = open_count;
+    state->open_count = (unsigned short)open_count;
     return true;
   }
 

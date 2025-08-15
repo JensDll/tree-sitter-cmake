@@ -1,0 +1,109 @@
+=================
+foreach [foreach]
+=================
+
+foreach()
+endforeach()
+
+---
+
+(source_file
+  (foreach
+    (foreach_command)
+    (body)
+    (endforeach_command)))
+
+=======================================
+whitespace after command name [foreach]
+=======================================
+
+foreach ()
+endforeach ()
+
+---
+
+(source_file
+  (foreach
+    (foreach_command)
+    (body)
+    (endforeach_command)))
+
+=====================
+case insensitive [if]
+=====================
+
+fOrEaCH()
+enDforEACH()
+
+---
+
+(source_file
+  (foreach
+    (foreach_command)
+    (body)
+    (endforeach_command)))
+
+==============
+body [foreach]
+==============
+
+foreach()
+  # body
+  message(STATUS body)
+endforeach()
+
+---
+
+(source_file
+  (foreach
+    (foreach_command)
+    (body
+      (comment)
+      (command
+        (identifier)
+        (argument_list
+          (unquoted_argument
+            (text))
+          (unquoted_argument
+            (text)))))
+    (endforeach_command)))
+
+===================
+arguments [foreach]
+===================
+
+foreach(i RANGE 1 10)
+  message(STATUS "${i}")
+endforeach(#[==[ end ]==])
+
+---
+
+(source_file
+  (foreach
+    (foreach_command
+      (argument_list
+        (unquoted_argument
+          (text))
+        (unquoted_argument
+          (text))
+        (unquoted_argument
+          (text))
+        (unquoted_argument
+          (text))))
+    (body
+      (command
+        (identifier)
+        (argument_list
+          (unquoted_argument
+            (text))
+          (quoted_argument
+            (normal_variable
+              (variable_content
+                (text)))))))
+    (endforeach_command
+      (argument_list
+        (comment
+          (bracket_arguemnt
+            (bracket_open)
+            (bracket_content)
+            (bracket_close)))))))

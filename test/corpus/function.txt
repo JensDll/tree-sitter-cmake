@@ -1,0 +1,167 @@
+===================
+function [function]
+===================
+
+function()
+endfunction()
+
+---
+
+(source_file
+  (function
+    (function_command)
+    (body)
+    (endfunction_command)))
+
+========================================
+whitespace after command name [function]
+========================================
+
+function ()
+endfunction ()
+
+---
+
+(source_file
+  (function
+    (function_command)
+    (body)
+    (endfunction_command)))
+
+===========================
+case insensitive [function]
+===========================
+
+fUnCTION()
+EndfUnCtion()
+
+---
+
+(source_file
+  (function
+    (function_command)
+    (body)
+    (endfunction_command)))
+
+===============
+body [function]
+===============
+
+function()
+  # body
+  message(STATUS body)
+endfunction()
+
+---
+
+(source_file
+  (function
+    (function_command)
+    (body
+      (comment)
+      (command
+        (identifier)
+        (argument_list
+          (unquoted_argument
+            (text))
+          (unquoted_argument
+            (text)))))
+    (endfunction_command)))
+
+====================
+arguments [function]
+====================
+
+function(configure_sanitizers)
+  set(p ${CMAKE_CURRENT_FUNCTION})
+  set(options DIRECTORY)
+  set(
+    single_value_args
+    ADDRESS
+    LEAK
+    UNDEFINED
+    MEMORY
+    THREAD
+    TARGET
+  )
+  set(multi_value_args)
+  cmake_parse_arguments(PARSE_ARGV 0 ${p} "${options}" "${single_value_args}" "${multi_value_args}")
+endfunction(#[==[ end ]==])
+
+---
+
+(source_file
+  (function
+    (function_command
+      (argument_list
+        (unquoted_argument
+          (text))))
+    (body
+      (command
+        (identifier)
+        (argument_list
+          (unquoted_argument
+            (text))
+          (unquoted_argument
+            (normal_variable
+              (variable_content
+                (text))))))
+      (command
+        (identifier)
+        (argument_list
+          (unquoted_argument
+            (text))
+          (unquoted_argument
+            (text))))
+      (command
+        (identifier)
+        (argument_list
+          (unquoted_argument
+            (text))
+          (unquoted_argument
+            (text))
+          (unquoted_argument
+            (text))
+          (unquoted_argument
+            (text))
+          (unquoted_argument
+            (text))
+          (unquoted_argument
+            (text))
+          (unquoted_argument
+            (text))))
+      (command
+        (identifier)
+        (argument_list
+          (unquoted_argument
+            (text))))
+      (command
+        (identifier)
+        (argument_list
+          (unquoted_argument
+            (text))
+          (unquoted_argument
+            (text))
+          (unquoted_argument
+            (normal_variable
+              (variable_content
+                (text))))
+          (quoted_argument
+            (normal_variable
+              (variable_content
+                (text))))
+          (quoted_argument
+            (normal_variable
+              (variable_content
+                (text))))
+          (quoted_argument
+            (normal_variable
+              (variable_content
+                (text)))))))
+    (endfunction_command
+      (argument_list
+        (comment
+          (bracket_arguemnt
+            (bracket_open)
+            (bracket_content)
+            (bracket_close)))))))
