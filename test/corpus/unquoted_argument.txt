@@ -275,9 +275,9 @@ message($ENV)
       (unquoted_argument
         (text)))))
 
-===================================
-square brackets [unquoted_argument]
-===================================
+==================================
+round brackets [unquoted_argument]
+==================================
 
 message(a(b)c)
 message(())
