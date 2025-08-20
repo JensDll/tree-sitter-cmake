@@ -1,0 +1,78 @@
+{
+  "version": 4,
+  "configurePresets": [
+    {
+      "name": "base",
+      "description": "",
+      "hidden": true,
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/out/build/${presetName}",
+      "installDir": "${sourceDir}/out/install/${presetName}",
+      "cacheVariables": {
+        "BUILD_SHARED_LIBS": false
+      }
+    },
+    {
+      "name": "debug",
+      "inherits": "base",
+      "cacheVariables": {
+        "CMAKE_C_COMPILER": "clang-20",
+        "CMAKE_CXX_COMPILER": "clang++-20",
+        "CMAKE_BUILD_TYPE": "Debug",
+        "ENABLE_CCACHE": true
+      }
+    },
+    {
+      "name": "release",
+      "inherits": "base",
+      "cacheVariables": {
+        "CMAKE_CXX_COMPILER": "clang++-20",
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    },
+    {
+      "name": "analyze-clang",
+      "inherits": "base",
+      "cacheVariables": {
+        "CMAKE_CXX_COMPILER": "clang++-20",
+        "CMAKE_BUILD_TYPE": "Debug",
+        "ENABLE_CCACHE": true,
+        "ENABLE_CLANG_TIDY": true,
+        "ENABLE_SANITIZER_ADDRESS": true,
+        "ENABLE_SANITIZER_UNDEFINED": true,
+        "ENABLE_INCLUDE_WHAT_YOU_USE": false
+      }
+    },
+    {
+      "name": "analyze-g++",
+      "inherits": "base",
+      "cacheVariables": {
+        "CMAKE_CXX_COMPILER": "g++",
+        "CMAKE_BUILD_TYPE": "Debug",
+        "ENABLE_CCACHE": true,
+        "ENABLE_CLANG_TIDY": true,
+        "ENABLE_SANITIZER_ADDRESS": true,
+        "ENABLE_SANITIZER_UNDEFINED": true,
+        "ENABLE_INCLUDE_WHAT_YOU_USE": false
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "debug",
+      "configurePreset": "debug"
+    },
+    {
+      "name": "release",
+      "configurePreset": "release"
+    },
+    {
+      "name": "analyze-clang",
+      "configurePreset": "analyze-clang"
+    },
+    {
+      "name": "analyze-g++",
+      "configurePreset": "analyze-g++"
+    }
+  ]
+}

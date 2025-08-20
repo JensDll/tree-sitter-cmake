@@ -8,10 +8,12 @@ endwhile()
 ---
 
 (source_file
-  (while
-    (while_command)
+  (while_statement
+    (while_command
+      (while))
     (body)
-    (endwhile_command)))
+    (endwhile_command
+      (endwhile))))
 
 =====================================
 whitespace after command name [while]
@@ -23,10 +25,12 @@ endwhile ()
 ---
 
 (source_file
-  (while
-    (while_command)
+  (while_statement
+    (while_command
+      (while))
     (body)
-    (endwhile_command)))
+    (endwhile_command
+      (endwhile))))
 
 ========================
 case insensitive [while]
@@ -38,10 +42,12 @@ ENDwHILE()
 ---
 
 (source_file
-  (while
-    (while_command)
+  (while_statement
+    (while_command
+      (while))
     (body)
-    (endwhile_command)))
+    (endwhile_command
+      (endwhile))))
 
 ============
 body [while]
@@ -55,8 +61,9 @@ endwhile()
 ---
 
 (source_file
-  (while
-    (while_command)
+  (while_statement
+    (while_command
+      (while))
     (body
       (comment)
       (command
@@ -66,7 +73,8 @@ endwhile()
             (text))
           (unquoted_argument
             (text)))))
-    (endwhile_command)))
+    (endwhile_command
+      (endwhile))))
 
 =================
 arguments [while]
@@ -79,8 +87,9 @@ endwhile(#[==[ end ]==])
 ---
 
 (source_file
-  (while
+  (while_statement
     (while_command
+      (while)
       (argument_list
         (unquoted_argument
           (text))))
@@ -93,6 +102,7 @@ endwhile(#[==[ end ]==])
           (unquoted_argument
             (text)))))
     (endwhile_command
+      (endwhile)
       (argument_list
         (comment
           (bracket_arguemnt

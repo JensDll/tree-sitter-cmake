@@ -13,14 +13,19 @@ export default grammar({
     $._env_variable_open,
     $._cache_variable_open,
     $._variable_close,
-    $.escape_sequence,
+    $._escape_start,
+    $._escape_character,
     $.quoted_continuation,
     $.bracket_open,
     $.bracket_content,
     $.bracket_close,
+    $._comment_start,
+    $._line_comment,
     $.error_sentinel,
   ],
-  inline: ($) => [$.variable, $.arguments],
+  inline: ($) => [$._variable, $._arguments],
+  word: ($) => $.identifier,
+  conflicts: ($) => [[$.comment]],
   rules: {
     source_file: ($) => repeat($._statement),
 
@@ -29,17 +34,17 @@ export default grammar({
     _statement: ($) =>
       choice(
         /\s/,
-        $.if,
-        $.foreach,
-        $.while,
-        $.function,
-        $.macro,
-        $.block,
+        $.if_statement,
+        $.foreach_statement,
+        $.while_statement,
+        $.function_statement,
+        $.macro_statement,
+        $.block_statement,
         $.command,
         $.comment,
       ),
 
-    if: ($) =>
+    if_statement: ($) =>
       seq(
         $.if_command,
         optional($.body),
@@ -48,51 +53,55 @@ export default grammar({
         $.endif_command,
       ),
     if_command: ($) =>
-      seq(/if/i, zero_or_more_horizontal_whitespace, $.arguments),
+      seq($.if, zero_or_more_horizontal_whitespace, $._arguments),
     elseif_command: ($) =>
-      seq(/elseif/i, zero_or_more_horizontal_whitespace, $.arguments),
+      seq($.elseif, zero_or_more_horizontal_whitespace, $._arguments),
     else_command: ($) =>
-      seq(/else/i, zero_or_more_horizontal_whitespace, $.arguments),
+      seq($.else, zero_or_more_horizontal_whitespace, $._arguments),
     endif_command: ($) =>
-      seq(/endif/i, zero_or_more_horizontal_whitespace, $.arguments),
+      seq($.endif, zero_or_more_horizontal_whitespace, $._arguments),
 
-    foreach: ($) =>
+    foreach_statement: ($) =>
       seq($.foreach_command, optional($.body), $.endforeach_command),
     foreach_command: ($) =>
-      seq(/foreach/i, zero_or_more_horizontal_whitespace, $.arguments),
+      seq($.foreach, zero_or_more_horizontal_whitespace, $._arguments),
     endforeach_command: ($) =>
-      seq(/endforeach/i, zero_or_more_horizontal_whitespace, $.arguments),
+      seq($.endforeach, zero_or_more_horizontal_whitespace, $._arguments),
 
-    while: ($) => seq($.while_command, optional($.body), $.endwhile_command),
+    while_statement: ($) =>
+      seq($.while_command, optional($.body), $.endwhile_command),
     while_command: ($) =>
-      seq(/while/i, zero_or_more_horizontal_whitespace, $.arguments),
+      seq($.while, zero_or_more_horizontal_whitespace, $._arguments),
     endwhile_command: ($) =>
-      seq(/endwhile/i, zero_or_more_horizontal_whitespace, $.arguments),
+      seq($.endwhile, zero_or_more_horizontal_whitespace, $._arguments),
 
-    function: ($) =>
+    function_statement: ($) =>
       seq($.function_command, optional($.body), $.endfunction_command),
     function_command: ($) =>
-      seq(/function/i, zero_or_more_horizontal_whitespace, $.arguments),
+      seq($.function, zero_or_more_horizontal_whitespace, $._arguments),
     endfunction_command: ($) =>
-      seq(/endfunction/i, zero_or_more_horizontal_whitespace, $.arguments),
+      seq($.endfunction, zero_or_more_horizontal_whitespace, $._arguments),
 
-    macro: ($) => seq($.macro_command, optional($.body), $.endmacro_command),
+    macro_statement: ($) =>
+      seq($.macro_command, optional($.body), $.endmacro_command),
     macro_command: ($) =>
-      seq(/macro/i, zero_or_more_horizontal_whitespace, $.arguments),
+      seq($.macro, zero_or_more_horizontal_whitespace, $._arguments),
     endmacro_command: ($) =>
-      seq(/endmacro/i, zero_or_more_horizontal_whitespace, $.arguments),
+      seq($.endmacro, zero_or_more_horizontal_whitespace, $._arguments),
 
-    block: ($) => seq($.block_command, optional($.body), $.endblock_command),
+    block_statement: ($) =>
+      seq($.block_command, optional($.body), $.endblock_command),
     block_command: ($) =>
-      seq(/block/i, zero_or_more_horizontal_whitespace, $.arguments),
+      seq($.block, zero_or_more_horizontal_whitespace, $._arguments),
     endblock_command: ($) =>
-      seq(/endblock/i, zero_or_more_horizontal_whitespace, $.arguments),
+      seq($.endblock, zero_or_more_horizontal_whitespace, $._arguments),
 
     command: ($) =>
-      seq($.identifier, zero_or_more_horizontal_whitespace, $.arguments),
+      seq($.identifier, zero_or_more_horizontal_whitespace, $._arguments),
 
-    arguments: ($) => seq("(", optional($.argument_list), ")"),
+    _arguments: ($) => seq("(", optional($.argument_list), ")"),
     argument_list: ($) => repeat1($._argument),
+
     _argument: ($) =>
       choice(
         /\s/,
@@ -100,13 +109,23 @@ export default grammar({
         $.unquoted_argument,
         $.quoted_argument,
         $.bracket_arguemnt,
-        $.arguments,
+        $._arguments,
+      ),
+
+    comment: ($) =>
+      seq(
+        $._comment_start,
+        optional(choice($.bracket_arguemnt, $._line_comment)),
       ),
 
     unquoted_argument: ($) =>
       prec.right(
         repeat1(
-          choice(alias($.unquoted_text, $.text), $.variable, $.escape_sequence),
+          choice(
+            alias($.unquoted_text, $.text),
+            $._variable,
+            $.escape_sequence,
+          ),
         ),
       ),
 
@@ -115,7 +134,7 @@ export default grammar({
         '"',
         repeat(choice(
           alias($.quoted_text, $.text),
-          $.variable,
+          $._variable,
           $.escape_sequence,
           $.quoted_continuation,
         )),
@@ -125,8 +144,9 @@ export default grammar({
     bracket_arguemnt: ($) =>
       seq($.bracket_open, optional($.bracket_content), $.bracket_close),
 
-    variable: ($) =>
+    _variable: ($) =>
       choice($.normal_variable, $.env_variable, $.cache_variable),
+
     normal_variable: ($) =>
       seq(
         $._normal_variable_open,
@@ -145,13 +165,34 @@ export default grammar({
         optional($.variable_content),
         $._variable_close,
       ),
+
     variable_content: ($) =>
       repeat1(
-        choice(alias($.variable_text, $.text), $.escape_sequence, $.variable),
+        choice(alias($.variable_text, $.text), $.escape_sequence, $._variable),
       ),
+
+    if: () => /if/i,
+    elseif: () => /elseif/i,
+    else: () => /else/i,
+    endif: () => /endif/i,
+
+    foreach: () => /foreach/i,
+    endforeach: () => /endforeach/i,
+
+    while: () => /while/i,
+    endwhile: () => /endwhile/i,
+
+    function: () => /function/i,
+    endfunction: () => /endfunction/i,
+
+    macro: () => /macro/i,
+    endmacro: () => /endmacro/i,
+
+    block: () => /block/i,
+    endblock: () => /endblock/i,
 
     identifier: () => /[A-Za-z_][A-Za-z0-9_]*/,
 
-    comment: ($) => choice(seq("#", choice($.bracket_arguemnt, /[^\r\n]*/))),
+    escape_sequence: ($) => seq($._escape_start, $._escape_character),
   },
 });

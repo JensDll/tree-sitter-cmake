@@ -8,10 +8,12 @@ endmacro()
 ---
 
 (source_file
-  (macro
-    (macro_command)
+  (macro_statement
+    (macro_command
+      (macro))
     (body)
-    (endmacro_command)))
+    (endmacro_command
+      (endmacro))))
 
 =====================================
 whitespace after command name [macro]
@@ -23,10 +25,12 @@ endmacro ()
 ---
 
 (source_file
-  (macro
-    (macro_command)
+  (macro_statement
+    (macro_command
+      (macro))
     (body)
-    (endmacro_command)))
+    (endmacro_command
+      (endmacro))))
 
 ========================
 case insensitive [macro]
@@ -38,10 +42,12 @@ endMACRO()
 ---
 
 (source_file
-  (macro
-    (macro_command)
+  (macro_statement
+    (macro_command
+      (macro))
     (body)
-    (endmacro_command)))
+    (endmacro_command
+      (endmacro))))
 
 ============
 body [macro]
@@ -55,8 +61,9 @@ endmacro()
 ---
 
 (source_file
-  (macro
-    (macro_command)
+  (macro_statement
+    (macro_command
+      (macro))
     (body
       (comment)
       (command
@@ -66,7 +73,8 @@ endmacro()
             (text))
           (unquoted_argument
             (text)))))
-    (endmacro_command)))
+    (endmacro_command
+      (endmacro))))
 
 =================
 arguments [macro]
@@ -91,8 +99,9 @@ endmacro(#[==[ end ]==])
 ---
 
 (source_file
-  (macro
+  (macro_statement
     (macro_command
+      (macro)
       (argument_list
         (unquoted_argument
           (text))))
@@ -159,6 +168,7 @@ endmacro(#[==[ end ]==])
               (variable_content
                 (text)))))))
     (endmacro_command
+      (endmacro)
       (argument_list
         (comment
           (bracket_arguemnt

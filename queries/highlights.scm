@@ -1,0 +1,16 @@
+[
+ (if)
+ (elseif)
+ (else)
+ (endif)
+ (foreach)
+ (endforeach)
+ (while)
+ (endwhile)
+ (function)
+ (endfunction)
+ (macro)
+ (endmacro)
+ (block)
+ (endblock)
+] @keyword

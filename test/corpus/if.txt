@@ -8,10 +8,12 @@ endif()
 ---
 
 (source_file
-  (if
-    (if_command)
+  (if_statement
+    (if_command
+      (if))
     (body)
-    (endif_command)))
+    (endif_command
+      (endif))))
 
 ===============
 if, elseif [if]
@@ -24,12 +26,15 @@ endif()
 ---
 
 (source_file
-  (if
-    (if_command)
+  (if_statement
+    (if_command
+      (if))
     (body)
-    (elseif_command)
+    (elseif_command
+      (elseif))
     (body)
-    (endif_command)))
+    (endif_command
+      (endif))))
 
 =====================
 if, elseif, else [if]
@@ -43,14 +48,18 @@ endif()
 ---
 
 (source_file
-  (if
-    (if_command)
+  (if_statement
+    (if_command
+      (if))
     (body)
-    (elseif_command)
+    (elseif_command
+      (elseif))
     (body)
-    (else_command)
+    (else_command
+      (else))
     (body)
-    (endif_command)))
+    (endif_command
+      (endif))))
 
 =======================
 if, elseif, elseif [if]
@@ -64,14 +73,18 @@ endif()
 ---
 
 (source_file
-  (if
-    (if_command)
+  (if_statement
+    (if_command
+      (if))
     (body)
-    (elseif_command)
+    (elseif_command
+      (elseif))
     (body)
-    (elseif_command)
+    (elseif_command
+      (elseif))
     (body)
-    (endif_command)))
+    (endif_command
+      (endif))))
 
 =============================
 if, elseif, elseif, else [if]
@@ -86,16 +99,21 @@ endif()
 ---
 
 (source_file
-  (if
-    (if_command)
+  (if_statement
+    (if_command
+      (if))
     (body)
-    (elseif_command)
+    (elseif_command
+      (elseif))
     (body)
-    (elseif_command)
+    (elseif_command
+      (elseif))
     (body)
-    (else_command)
+    (else_command
+      (else))
     (body)
-    (endif_command)))
+    (endif_command
+      (endif))))
 
 ============
 if body [if]
@@ -109,8 +127,9 @@ endif()
 ---
 
 (source_file
-  (if
+  (if_statement
     (if_command
+      (if)
       (argument_list
         (unquoted_argument
           (text))
@@ -125,7 +144,8 @@ endif()
           (unquoted_argument
             (text))))
       (comment))
-    (endif_command)))
+    (endif_command
+      (endif))))
 
 ================
 elseif body [if]
@@ -139,10 +159,12 @@ endif()
 ---
 
 (source_file
-  (if
-    (if_command)
+  (if_statement
+    (if_command
+      (if))
     (body)
     (elseif_command
+      (elseif)
       (argument_list
         (unquoted_argument
           (normal_variable
@@ -154,7 +176,8 @@ endif()
           (bracket_open)
           (bracket_content)
           (bracket_close))))
-    (endif_command)))
+    (endif_command
+      (endif))))
 
 ==============
 else body [if]
@@ -168,17 +191,20 @@ endif()
 ---
 
 (source_file
-  (if
-    (if_command)
+  (if_statement
+    (if_command
+      (if))
     (body)
     (else_command
+      (else)
       (argument_list
         (unquoted_argument
           (text))))
     (body
       (command
         (identifier)))
-    (endif_command)))
+    (endif_command
+      (endif))))
 
 ==================================
 whitespace after command name [if]
@@ -192,14 +218,18 @@ endif ()
 ---
 
 (source_file
-  (if
-    (if_command)
+  (if_statement
+    (if_command
+      (if))
     (body)
-    (elseif_command)
+    (elseif_command
+      (elseif))
     (body)
-    (else_command)
+    (else_command
+      (else))
     (body)
-    (endif_command)))
+    (endif_command
+      (endif))))
 
 ==============
 arguments [if]
@@ -215,8 +245,9 @@ endif(
 ---
 
 (source_file
-  (if
+  (if_statement
     (if_command
+      (if)
       (argument_list
         (argument_list
           (unquoted_argument
@@ -233,6 +264,7 @@ endif(
               (text))))))
     (body)
     (elseif_command
+      (elseif)
       (argument_list
         (unquoted_argument
           (text))
@@ -240,6 +272,7 @@ endif(
           (text))))
     (body)
     (else_command
+      (else)
       (argument_list
         (unquoted_argument
           (text))
@@ -247,6 +280,7 @@ endif(
           (text))))
     (body)
     (endif_command
+      (endif)
       (argument_list
         (comment)))))
 
@@ -262,11 +296,15 @@ ENDIF()
 ---
 
 (source_file
-  (if
-    (if_command)
+  (if_statement
+    (if_command
+      (if))
     (body)
-    (elseif_command)
+    (elseif_command
+      (elseif))
     (body)
-    (else_command)
+    (else_command
+      (else))
     (body)
-    (endif_command)))
+    (endif_command
+      (endif))))

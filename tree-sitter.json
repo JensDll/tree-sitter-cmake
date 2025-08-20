@@ -3,7 +3,8 @@
     {
       "name": "cmake",
       "scope": "source.cmake",
-      "file-types": ["cmake"]
+      "file-types": ["cmake"],
+      "highlights": "queries/highlights.scm"
     }
   ],
   "metadata": {

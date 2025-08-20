@@ -8,10 +8,12 @@ endfunction()
 ---
 
 (source_file
-  (function
-    (function_command)
+  (function_statement
+    (function_command
+      (function))
     (body)
-    (endfunction_command)))
+    (endfunction_command
+      (endfunction))))
 
 ========================================
 whitespace after command name [function]
@@ -23,10 +25,12 @@ endfunction ()
 ---
 
 (source_file
-  (function
-    (function_command)
+  (function_statement
+    (function_command
+      (function))
     (body)
-    (endfunction_command)))
+    (endfunction_command
+      (endfunction))))
 
 ===========================
 case insensitive [function]
@@ -38,10 +42,12 @@ EndfUnCtion()
 ---
 
 (source_file
-  (function
-    (function_command)
+  (function_statement
+    (function_command
+      (function))
     (body)
-    (endfunction_command)))
+    (endfunction_command
+      (endfunction))))
 
 ===============
 body [function]
@@ -55,8 +61,9 @@ endfunction()
 ---
 
 (source_file
-  (function
-    (function_command)
+  (function_statement
+    (function_command
+      (function))
     (body
       (comment)
       (command
@@ -66,7 +73,8 @@ endfunction()
             (text))
           (unquoted_argument
             (text)))))
-    (endfunction_command)))
+    (endfunction_command
+      (endfunction))))
 
 ====================
 arguments [function]
@@ -91,8 +99,9 @@ endfunction(#[==[ end ]==])
 ---
 
 (source_file
-  (function
+  (function_statement
     (function_command
+      (function)
       (argument_list
         (unquoted_argument
           (text))))
@@ -159,6 +168,7 @@ endfunction(#[==[ end ]==])
               (variable_content
                 (text)))))))
     (endfunction_command
+      (endfunction)
       (argument_list
         (comment
           (bracket_arguemnt

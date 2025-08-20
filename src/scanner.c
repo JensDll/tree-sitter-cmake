@@ -4,6 +4,7 @@
 #include <assert.h>
 #include <ctype.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include <stdint.h>
 #include <string.h>
 
@@ -15,11 +16,14 @@ typedef enum TokenType {
   ENV_VARIABLE_OPEN,
   CACHE_VARIABLE_OPEN,
   VARIABLE_CLOSE,
-  ESCAPE_SEQUENCE,
+  ESCAPE_START,
+  ESCAPE_CHARACTER,
   QUOTED_CONTINUATION,
   BRACKET_OPEN,
   BRACKET_CONTENT,
   BRACKET_CLOSE,
+  COMMENT_START,
+  LINE_COMMENT,
   ERROR_SENTINEL
 } TokenType;
 
@@ -41,6 +45,22 @@ typedef struct State
 #else
 #define ATTRIBUTE_UNUSED /**/
 #define ATTRIBUTE_FALLTROUGH /**/
+#endif
+
+#ifdef NDEBUG
+#define ASSERT_VALID_SYMBOLS(...) (void)0;
+#else
+#define ASSERT_VALID_SYMBOLS(...)                                     \
+  {                                                                   \
+    const int values[] = { __VA_ARGS__ };                             \
+    static bool expected[ERROR_SENTINEL + 1];                         \
+    for (size_t i = 0; i < sizeof(values) / sizeof(values[0]); ++i) { \
+      expected[values[i]] = true;                                     \
+    }                                                                 \
+    for (size_t i = 0; i <= ERROR_SENTINEL; ++i) {                    \
+      assert(expected[i] == valid_symbols[i]);                        \
+    }                                                                 \
+  }
 #endif
 
 void* tree_sitter_cmake_external_scanner_create(void)
@@ -106,7 +126,7 @@ static bool is_bracket_close(TSLexer* const lexer, const unsigned int open_count
   return lexer->lookahead == ']' && open_count == close_count;
 }
 
-static bool is_variable(TSLexer* const lexer, TSSymbol* const open_type)
+inline static bool is_variable(TSLexer* const lexer, TSSymbol* const open_type)
 {
   enum StateMachine {
     MATCH_VARIABLE,
@@ -177,33 +197,36 @@ next_state:
   }
 }
 
-static bool is_quoted_text(TSLexer* const lexer)
+inline static bool is_escape_character(const int c)
+{
+  return c == 't' || c == 'r' || c == 'n' || c == ';' || !isalnum(c);
+}
+
+inline static bool is_variable_text(const int c)
+{
+  return isalnum(c) || c == '/' || c == '_' || c == '.' || c == '+' || c == '-';
+}
+
+inline static bool is_argument_separator(const int c)
+{
+  return isspace(c) || c == '(' || c == ')' || c == '#';
+}
+
+inline static bool is_quoted_text(TSLexer* const lexer)
 {
   TSSymbol open_type = 0;
   return lexer->lookahead != '\\' && lexer->lookahead != '"' && !is_variable(lexer, &open_type);
 }
 
-static bool is_argument_separator(const TSLexer* const lexer)
-{
-  return isspace(lexer->lookahead) || lexer->lookahead == '(' || lexer->lookahead == ')' || lexer->lookahead == '#';
-}
-
-static bool is_unqouted_text(TSLexer* const lexer)
+inline static bool is_unqouted_text(TSLexer* const lexer)
 {
   TSSymbol open_type = 0;
-  return !is_argument_separator(lexer) && lexer->lookahead != '\\' && !is_variable(lexer, &open_type);
+  return !is_argument_separator(lexer->lookahead) && lexer->lookahead != '\\' && !is_variable(lexer, &open_type);
 }
 
-static bool is_escape_character(const TSLexer* const lexer)
+inline static bool is_line_comment(const int c)
 {
-  return lexer->lookahead == 't' || lexer->lookahead == 'r' || lexer->lookahead == 'n' || lexer->lookahead == ';'
-         || !isalnum(lexer->lookahead);
-}
-
-static bool is_variable_text(const TSLexer* const lexer)
-{
-  return isalnum(lexer->lookahead) || lexer->lookahead == '/' || lexer->lookahead == '_' || lexer->lookahead == '.'
-         || lexer->lookahead == '+' || lexer->lookahead == '-';
+  return c != '\n';
 }
 
 static bool scan_bracket_content(TSLexer* const lexer, State* const state)
@@ -211,7 +234,7 @@ static bool scan_bracket_content(TSLexer* const lexer, State* const state)
   lexer->result_symbol = BRACKET_CLOSE;
 
   if (is_bracket_close(lexer, state->open_count)) {
-    lexer->advance(lexer, true);
+    lexer->advance(lexer, false);
     return true;
   }
 
@@ -231,20 +254,14 @@ static bool scan_variable_content(TSLexer* const lexer, State* const state)
   if (lexer->lookahead == '}') {
     lexer->result_symbol = VARIABLE_CLOSE;
     lexer->advance(lexer, false);
-    state->unquoted_argument_active = state->unquoted_argument_active && !is_argument_separator(lexer);
+    state->unquoted_argument_active = state->unquoted_argument_active && !is_argument_separator(lexer->lookahead);
     return true;
   }
 
   if (lexer->lookahead == '\\') {
     lexer->advance(lexer, false);
-
-    if (is_escape_character(lexer)) {
-      lexer->advance(lexer, false);
-      lexer->result_symbol = ESCAPE_SEQUENCE;
-      return true;
-    }
-
-    return false;
+    lexer->result_symbol = ESCAPE_START;
+    return true;
   }
 
   TSSymbol open_type = 0;
@@ -254,7 +271,7 @@ static bool scan_variable_content(TSLexer* const lexer, State* const state)
     return true;
   }
 
-  while (!lexer->eof(lexer) && is_variable_text(lexer)) {
+  while (!lexer->eof(lexer) && is_variable_text(lexer->lookahead)) {
     lexer->advance(lexer, false);
   }
 
@@ -277,10 +294,56 @@ static bool scan_bracket_open(TSLexer* const lexer, State* const state)
   return false;
 }
 
+static bool scan_escape_character(TSLexer* const lexer, State* const state)
+{
+  if (is_escape_character(lexer->lookahead)) {
+    lexer->advance(lexer, false);
+    lexer->result_symbol = ESCAPE_CHARACTER;
+    state->unquoted_argument_active = state->unquoted_argument_active && !is_argument_separator(lexer->lookahead);
+    return true;
+  }
+
+  return false;
+}
+
+static bool scan_comment_start(TSLexer* const lexer)
+{
+  if (lexer->lookahead == '#') {
+    lexer->advance(lexer, false);
+    lexer->result_symbol = COMMENT_START;
+    return true;
+  }
+
+  return false;
+}
+
+static bool scan_comment(TSLexer* const lexer, State* const state)
+{
+  if (scan_bracket_open(lexer, state)) {
+    return true;
+  }
+
+  if (lexer->eof(lexer) || !is_line_comment(lexer->lookahead)) {
+    return false;
+  }
+
+  lexer->result_symbol = LINE_COMMENT;
+
+  do {
+    lexer->advance(lexer, false);
+  } while (!lexer->eof(lexer) && is_line_comment(lexer->lookahead));
+
+  return true;
+}
+
 static bool scan_unquoted_argument(TSLexer* const lexer, State* const state)
 {
-  if (is_argument_separator(lexer)) {
+  if (isspace(lexer->lookahead) || lexer->lookahead == '(' || lexer->lookahead == ')') {
     return false;
+  }
+
+  if (scan_comment_start(lexer)) {
+    return true;
   }
 
   if (!state->unquoted_argument_active) {
@@ -297,15 +360,8 @@ static bool scan_unquoted_argument(TSLexer* const lexer, State* const state)
 
   if (lexer->lookahead == '\\') {
     lexer->advance(lexer, false);
-
-    if (is_escape_character(lexer)) {
-      lexer->advance(lexer, false);
-      lexer->result_symbol = ESCAPE_SEQUENCE;
-      state->unquoted_argument_active = !is_argument_separator(lexer);
-      return true;
-    }
-
-    return false;
+    lexer->result_symbol = ESCAPE_START;
+    return true;
   }
 
   TSSymbol open_type = 0;
@@ -341,13 +397,9 @@ static bool scan_quoted_argument(TSLexer* const lexer)
       return true;
     }
 
-    if (is_escape_character(lexer)) {
-      lexer->advance(lexer, false);
-      lexer->result_symbol = ESCAPE_SEQUENCE;
-      return true;
-    }
+    lexer->result_symbol = ESCAPE_START;
 
-    return false;
+    return true;
   }
 
   TSSymbol open_type = 0;
@@ -373,6 +425,10 @@ bool tree_sitter_cmake_external_scanner_scan(void* const payload, TSLexer* const
     return false;
   }
 
+  if (valid_symbols[LINE_COMMENT]) {
+    return scan_comment(lexer, payload);
+  }
+
   if (valid_symbols[UNQUOTED_TEXT]) {
     return scan_unquoted_argument(lexer, payload);
   }
@@ -389,7 +445,11 @@ bool tree_sitter_cmake_external_scanner_scan(void* const payload, TSLexer* const
     return scan_variable_content(lexer, payload);
   }
 
-  assert(valid_symbols[BRACKET_OPEN]);
+  if (valid_symbols[ESCAPE_CHARACTER]) {
+    return scan_escape_character(lexer, payload);
+  }
 
-  return scan_bracket_open(lexer, payload);
+  ASSERT_VALID_SYMBOLS(COMMENT_START)
+
+  return scan_comment_start(lexer);
 }

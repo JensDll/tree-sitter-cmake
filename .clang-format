@@ -1,5 +1,5 @@
 ---
-Language: C
+Language: Cpp
 
 IncludeBlocks: Regroup
 IncludeCategories:
@@ -64,8 +64,6 @@ BreakStringLiterals: true
 
 ColumnLimit: 120
 
-CommentPragmas: "^ IWYU pragma:"
-
 CompactNamespaces: false
 
 ConstructorInitializerIndentWidth: 2
@@ -80,11 +78,6 @@ DerivePointerAlignment: false
 DisableFormat: false
 
 FixNamespaceComments: true
-
-ForEachMacros:
-  - foreach
-  - Q_FOREACH
-  - BOOST_FOREACH
 
 AccessModifierOffset: -2
 IndentAccessModifiers: false

@@ -1,0 +1,14 @@
+# Directories
+src/tree_sitter/
+playground/out/
+.cache/
+
+# Files
+src/node-types.json
+src/parser.c
+src/grammar.json
+test/*.*
+*.vim
+*.lldb
+lldbdash.json
+compile_commands.json
