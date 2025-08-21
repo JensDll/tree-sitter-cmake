@@ -12,3 +12,4 @@ test/*.*
 *.lldb
 lldbdash.json
 compile_commands.json
+*.so

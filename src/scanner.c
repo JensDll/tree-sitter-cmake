@@ -29,7 +29,7 @@ typedef enum TokenType {
 
 typedef struct State
 {
-  unsigned short open_count;
+  unsigned int open_count;
   bool unquoted_argument_active;
 } State;
 
@@ -52,7 +52,7 @@ typedef struct State
 #else
 #define ASSERT_VALID_SYMBOLS(...)                                     \
   {                                                                   \
-    const int values[] = { __VA_ARGS__ };                             \
+    static const int values[] = { __VA_ARGS__ };                      \
     static bool expected[ERROR_SENTINEL + 1];                         \
     for (size_t i = 0; i < sizeof(values) / sizeof(values[0]); ++i) { \
       expected[values[i]] = true;                                     \
@@ -212,18 +212,6 @@ inline static bool is_argument_separator(const int c)
   return isspace(c) || c == '(' || c == ')' || c == '#';
 }
 
-inline static bool is_quoted_text(TSLexer* const lexer)
-{
-  TSSymbol open_type = 0;
-  return lexer->lookahead != '\\' && lexer->lookahead != '"' && !is_variable(lexer, &open_type);
-}
-
-inline static bool is_unqouted_text(TSLexer* const lexer)
-{
-  TSSymbol open_type = 0;
-  return !is_argument_separator(lexer->lookahead) && lexer->lookahead != '\\' && !is_variable(lexer, &open_type);
-}
-
 inline static bool is_line_comment(const int c)
 {
   return c != '\n';
@@ -272,12 +260,11 @@ static bool scan_variable_content(TSLexer* const lexer, State* const state)
   }
 
   while (!lexer->eof(lexer) && is_variable_text(lexer->lookahead)) {
+    lexer->result_symbol = VARIABLE_TEXT;
     lexer->advance(lexer, false);
   }
 
-  lexer->result_symbol = VARIABLE_TEXT;
-
-  return !lexer->eof(lexer);
+  return lexer->result_symbol == VARIABLE_TEXT;
 }
 
 static bool scan_bracket_open(TSLexer* const lexer, State* const state)
@@ -287,7 +274,7 @@ static bool scan_bracket_open(TSLexer* const lexer, State* const state)
   if (is_bracket_open(lexer, &open_count)) {
     lexer->advance(lexer, false);
     lexer->result_symbol = BRACKET_OPEN;
-    state->open_count = (unsigned short)open_count;
+    state->open_count = open_count;
     return true;
   }
 
@@ -371,15 +358,26 @@ static bool scan_unquoted_argument(TSLexer* const lexer, State* const state)
     return true;
   }
 
-  while (!lexer->eof(lexer) && is_unqouted_text(lexer)) {
-    lexer->advance(lexer, false);
+  state->unquoted_argument_active = false;
+  lexer->result_symbol = UNQUOTED_TEXT;
+
+  while (!lexer->eof(lexer)) {
     lexer->mark_end(lexer);
+
+    if (is_variable(lexer, &open_type)) {
+      return true;
+    }
+
+    lexer->mark_end(lexer);
+
+    if (is_argument_separator(lexer->lookahead) || lexer->lookahead == '\\') {
+      return true;
+    }
+
+    lexer->advance(lexer, false);
   }
 
-  lexer->result_symbol = UNQUOTED_TEXT;
-  state->unquoted_argument_active = false;
-
-  return !lexer->eof(lexer);
+  return false;
 }
 
 static bool scan_quoted_argument(TSLexer* const lexer)
@@ -409,14 +407,25 @@ static bool scan_quoted_argument(TSLexer* const lexer)
     return true;
   }
 
-  while (!lexer->eof(lexer) && is_quoted_text(lexer)) {
-    lexer->advance(lexer, false);
-    lexer->mark_end(lexer);
-  }
-
   lexer->result_symbol = QUOTED_TEXT;
 
-  return !lexer->eof(lexer);
+  while (!lexer->eof(lexer)) {
+    lexer->mark_end(lexer);
+
+    if (is_variable(lexer, &open_type)) {
+      return true;
+    }
+
+    lexer->mark_end(lexer);
+
+    if (lexer->lookahead == '\\' || lexer->lookahead == '"') {
+      return true;
+    }
+
+    lexer->advance(lexer, false);
+  }
+
+  return false;
 }
 
 bool tree_sitter_cmake_external_scanner_scan(void* const payload, TSLexer* const lexer, const bool* const valid_symbols)
@@ -449,7 +458,9 @@ bool tree_sitter_cmake_external_scanner_scan(void* const payload, TSLexer* const
     return scan_escape_character(lexer, payload);
   }
 
-  ASSERT_VALID_SYMBOLS(COMMENT_START)
+  if (valid_symbols[COMMENT_START]) {
+    return scan_comment_start(lexer);
+  }
 
-  return scan_comment_start(lexer);
+  return false;
 }

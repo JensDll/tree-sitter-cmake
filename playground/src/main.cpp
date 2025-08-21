@@ -21,11 +21,7 @@ int main()
                fmt::println("[{}] {}", log_type, std::string_view(buffer));
              } });
 
-  static constexpr std::string_view source_code{
-    "while(ON)\n"
-    "message(STATUS ...)\n"
-    "endwhile(#[==[ end ]==])"
-  };
+  static constexpr std::string_view source_code{ "list(\"^=.*$\")" };
 
   TSTree* const tree = ts_parser_parse_string(parser, nullptr, source_code.data(), source_code.size());
 

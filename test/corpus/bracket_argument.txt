@@ -10,7 +10,7 @@ message([[a]b]=]c]])
   (command
     (identifier)
     (argument_list
-      (bracket_arguemnt
+      (bracket_argument
         (bracket_open)
         (bracket_content)
         (bracket_close)))))
@@ -27,7 +27,7 @@ message([===[a]==]b]====]c]===])
   (command
     (identifier)
     (argument_list
-      (bracket_arguemnt
+      (bracket_argument
         (bracket_open)
         (bracket_content)
         (bracket_close)))))
@@ -53,7 +53,7 @@ Ad litora torquent per conubia nostra inceptos himenaeos.
   (command
     (identifier)
     (argument_list
-      (bracket_arguemnt
+      (bracket_argument
         (bracket_open)
         (bracket_content)
         (bracket_close)))))
@@ -70,6 +70,6 @@ message([[]])
   (command
     (identifier)
     (argument_list
-      (bracket_arguemnt
+      (bracket_argument
         (bracket_open)
         (bracket_close)))))

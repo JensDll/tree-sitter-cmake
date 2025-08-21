@@ -400,3 +400,55 @@ message(\ [[a]]\ [[]])
         (text)
         (escape_sequence)
         (text)))))
+
+==================================================
+variable open before separator [unquoted_argument]
+==================================================
+
+message(abc$ abc)
+
+---
+
+(source_file
+  (command
+    (identifier)
+    (argument_list
+      (unquoted_argument
+        (text))
+      (unquoted_argument
+        (text)))))
+
+================================================
+variable open before comment [unquoted_argument]
+================================================
+
+message(abc$#[[]])
+
+---
+
+(source_file
+  (command
+    (identifier)
+    (argument_list
+      (unquoted_argument
+        (text))
+      (comment
+        (bracket_argument
+          (bracket_open)
+          (bracket_close))))))
+
+========================================================
+variable open before escape sequence [unquoted_argument]
+========================================================
+
+message(abc$\n)
+
+---
+
+(source_file
+  (command
+    (identifier)
+    (argument_list
+      (unquoted_argument
+        (text)
+        (escape_sequence)))))

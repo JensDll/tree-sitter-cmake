@@ -108,14 +108,14 @@ export default grammar({
         $.comment,
         $.unquoted_argument,
         $.quoted_argument,
-        $.bracket_arguemnt,
+        $.bracket_argument,
         $._arguments,
       ),
 
     comment: ($) =>
       seq(
         $._comment_start,
-        optional(choice($.bracket_arguemnt, $._line_comment)),
+        choice($.bracket_argument, optional($._line_comment)),
       ),
 
     unquoted_argument: ($) =>
@@ -141,7 +141,7 @@ export default grammar({
         '"',
       ),
 
-    bracket_arguemnt: ($) =>
+    bracket_argument: ($) =>
       seq($.bracket_open, optional($.bracket_content), $.bracket_close),
 
     _variable: ($) =>

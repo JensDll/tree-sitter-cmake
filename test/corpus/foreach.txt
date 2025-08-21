@@ -113,7 +113,7 @@ endforeach(#[==[ end ]==])
       (endforeach)
       (argument_list
         (comment
-          (bracket_arguemnt
+          (bracket_argument
             (bracket_open)
             (bracket_content)
             (bracket_close)))))))

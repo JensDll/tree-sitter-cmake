@@ -16,7 +16,7 @@ message(abc # abc
       (unquoted_argument
         (text))
       (comment)
-      (bracket_arguemnt
+      (bracket_argument
         (bracket_open)
         (bracket_content)
         (bracket_close))
@@ -56,21 +56,21 @@ message(abc #[[ abc ]]
       (unquoted_argument
         (text))
       (comment
-        (bracket_arguemnt
+        (bracket_argument
           (bracket_open)
           (bracket_content)
           (bracket_close)))
-      (bracket_arguemnt
+      (bracket_argument
         (bracket_open)
         (bracket_content)
         (bracket_close))
       (comment
-        (bracket_arguemnt
+        (bracket_argument
           (bracket_open)
           (bracket_content)
           (bracket_close)))
       (comment
-        (bracket_arguemnt
+        (bracket_argument
           (bracket_open)
           (bracket_content)
           (bracket_close))))))
@@ -88,7 +88,7 @@ message(#[[]])
     (identifier)
     (argument_list
       (comment
-        (bracket_arguemnt
+        (bracket_argument
           (bracket_open)
           (bracket_close))))))
 
@@ -115,7 +115,7 @@ message(abc#[[foo]])
       (unquoted_argument
         (text))
       (comment
-        (bracket_arguemnt
+        (bracket_argument
           (bracket_open)
           (bracket_content)
           (bracket_close))))))
@@ -143,7 +143,7 @@ message(\n#[[foo]])
       (unquoted_argument
         (escape_sequence))
       (comment
-        (bracket_arguemnt
+        (bracket_argument
           (bracket_open)
           (bracket_content)
           (bracket_close))))))
@@ -175,7 +175,7 @@ message(${x}#[[foo]])
           (variable_content
             (text))))
       (comment
-        (bracket_arguemnt
+        (bracket_argument
           (bracket_open)
           (bracket_content)
           (bracket_close))))))
@@ -203,7 +203,7 @@ message("abc"#[[foo]])
       (quoted_argument
         (text))
       (comment
-        (bracket_arguemnt
+        (bracket_argument
           (bracket_open)
           (bracket_content)
           (bracket_close))))))
@@ -222,7 +222,7 @@ message([[abc]]#[[foo]])
   (command
     (identifier)
     (argument_list
-      (bracket_arguemnt
+      (bracket_argument
         (bracket_open)
         (bracket_content)
         (bracket_close))
@@ -230,12 +230,12 @@ message([[abc]]#[[foo]])
   (command
     (identifier)
     (argument_list
-      (bracket_arguemnt
+      (bracket_argument
         (bracket_open)
         (bracket_content)
         (bracket_close))
       (comment
-        (bracket_arguemnt
+        (bracket_argument
           (bracket_open)
           (bracket_content)
           (bracket_close))))))
@@ -252,7 +252,7 @@ comment outside of command [comment]
 (source_file
   (comment)
   (comment
-    (bracket_arguemnt
+    (bracket_argument
       (bracket_open)
       (bracket_content)
       (bracket_close))))

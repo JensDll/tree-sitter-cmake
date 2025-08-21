@@ -383,3 +383,35 @@ $CACHE{Only} this and nothing more.\"")
             (text)))
         (text)
         (escape_sequence)))))
+
+=============================================
+variable open before quotes [quoted_argument]
+=============================================
+
+message("abc$")
+
+---
+
+(source_file
+  (command
+    (identifier)
+    (argument_list
+      (quoted_argument
+        (text)))))
+
+======================================================
+variable open before escape sequence [quoted_argument]
+======================================================
+
+message("abc$\n")
+
+---
+
+(source_file
+  (command
+    (identifier)
+    (argument_list
+      (quoted_argument
+        (text)
+        (escape_sequence)))))
+

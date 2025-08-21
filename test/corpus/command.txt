@@ -18,7 +18,7 @@ message(
         (text))
       (quoted_argument
         (text))
-      (bracket_arguemnt
+      (bracket_argument
         (bracket_open)
         (bracket_content)
         (bracket_close)))))
@@ -79,7 +79,7 @@ message(${x} [[abc]])
         (normal_variable
           (variable_content
             (text))))
-      (bracket_arguemnt
+      (bracket_argument
         (bracket_open)
         (bracket_content)
         (bracket_close)))))
@@ -115,7 +115,7 @@ message(\n [[abc]])
     (argument_list
       (unquoted_argument
         (escape_sequence))
-      (bracket_arguemnt
+      (bracket_argument
         (bracket_open)
         (bracket_content)
         (bracket_close)))))
