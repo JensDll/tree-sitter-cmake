@@ -17,7 +17,8 @@ message(
       (unquoted_argument
         (text))
       (quoted_argument
-        (text))
+        (quoted_content
+          (text)))
       (bracket_argument
         (bracket_open)
         (bracket_content)
@@ -36,11 +37,13 @@ message(${x} "abc")
     (identifier)
     (argument_list
       (unquoted_argument
-        (normal_variable
-          (variable_content
-            (text))))
+        (variable
+          (normal_variable
+            (variable_content
+              (text)))))
       (quoted_argument
-        (text)))))
+        (quoted_content
+          (text))))))
 
 ===================================================================
 unquoted variable, immediate comment, and quoted argument [command]
@@ -56,12 +59,14 @@ message(${x}#
     (identifier)
     (argument_list
       (unquoted_argument
-        (normal_variable
-          (variable_content
-            (text))))
+        (variable
+          (normal_variable
+            (variable_content
+              (text)))))
       (comment)
       (quoted_argument
-        (text)))))
+        (quoted_content
+          (text))))))
 
 ================================================
 unquoted variable and bracket argument [command]
@@ -76,9 +81,10 @@ message(${x} [[abc]])
     (identifier)
     (argument_list
       (unquoted_argument
-        (normal_variable
-          (variable_content
-            (text))))
+        (variable
+          (normal_variable
+            (variable_content
+              (text)))))
       (bracket_argument
         (bracket_open)
         (bracket_content)
@@ -99,7 +105,8 @@ message(\n "abc")
       (unquoted_argument
         (escape_sequence))
       (quoted_argument
-        (text)))))
+        (quoted_content
+          (text))))))
 
 =======================================================
 unquoted escape sequence and bracket argument [command]
@@ -136,7 +143,8 @@ message(\n"" "abc")
         (escape_sequence)
         (text))
       (quoted_argument
-        (text)))))
+        (quoted_content
+          (text))))))
 
 ====================================
 quoted argument in bracket [command]
@@ -151,15 +159,17 @@ message(${x}"" a("xyz") "")
     (identifier)
     (argument_list
       (unquoted_argument
-        (normal_variable
-          (variable_content
-            (text)))
+        (variable
+          (normal_variable
+            (variable_content
+              (text))))
         (text))
       (unquoted_argument
         (text))
       (argument_list
         (quoted_argument
-          (text)))
+          (quoted_content
+            (text))))
       (quoted_argument))))
 
 =====================================

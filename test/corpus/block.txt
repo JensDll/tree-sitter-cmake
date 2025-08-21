@@ -103,21 +103,24 @@ endblock(
       (unquoted_argument
         (text))
       (quoted_argument
-        (text))))
+        (quoted_content
+          (text)))))
   (command
     (identifier)
     (argument_list
       (unquoted_argument
         (text))
       (quoted_argument
-        (text))))
+        (quoted_content
+          (text)))))
   (command
     (identifier)
     (argument_list
       (unquoted_argument
         (text))
       (quoted_argument
-        (text))))
+        (quoted_content
+          (text)))))
   (block_statement
     (block_command
       (block)
@@ -135,7 +138,8 @@ endblock(
           (unquoted_argument
             (text))
           (quoted_argument
-            (text))))
+            (quoted_content
+              (text)))))
       (command
         (identifier)
         (argument_list
@@ -147,7 +151,8 @@ endblock(
           (unquoted_argument
             (text))
           (quoted_argument
-            (text)))))
+            (quoted_content
+              (text))))))
     (endblock_command
       (endblock)
       (argument_list

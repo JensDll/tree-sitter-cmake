@@ -163,17 +163,19 @@ message(${x}#[[foo]])
     (identifier)
     (argument_list
       (unquoted_argument
-        (normal_variable
-          (variable_content
-            (text))))
+        (variable
+          (normal_variable
+            (variable_content
+              (text)))))
       (comment)))
   (command
     (identifier)
     (argument_list
       (unquoted_argument
-        (normal_variable
-          (variable_content
-            (text))))
+        (variable
+          (normal_variable
+            (variable_content
+              (text)))))
       (comment
         (bracket_argument
           (bracket_open)
@@ -195,13 +197,15 @@ message("abc"#[[foo]])
     (identifier)
     (argument_list
       (quoted_argument
-        (text))
+        (quoted_content
+          (text)))
       (comment)))
   (command
     (identifier)
     (argument_list
       (quoted_argument
-        (text))
+        (quoted_content
+          (text)))
       (comment
         (bracket_argument
           (bracket_open)

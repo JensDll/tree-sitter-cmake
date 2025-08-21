@@ -106,9 +106,11 @@ endforeach(#[==[ end ]==])
           (unquoted_argument
             (text))
           (quoted_argument
-            (normal_variable
-              (variable_content
-                (text)))))))
+            (quoted_content
+              (variable
+                (normal_variable
+                  (variable_content
+                    (text)))))))))
     (endforeach_command
       (endforeach)
       (argument_list

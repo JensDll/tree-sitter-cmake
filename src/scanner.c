@@ -259,12 +259,17 @@ static bool scan_variable_content(TSLexer* const lexer, State* const state)
     return true;
   }
 
-  while (!lexer->eof(lexer) && is_variable_text(lexer->lookahead)) {
-    lexer->result_symbol = VARIABLE_TEXT;
-    lexer->advance(lexer, false);
+  if (lexer->eof(lexer) || !is_variable_text(lexer->lookahead)) {
+    return false;
   }
 
-  return lexer->result_symbol == VARIABLE_TEXT;
+  lexer->result_symbol = VARIABLE_TEXT;
+
+  do {
+    lexer->advance(lexer, false);
+  } while (!lexer->eof(lexer) && is_variable_text(lexer->lookahead));
+
+  return true;
 }
 
 static bool scan_bracket_open(TSLexer* const lexer, State* const state)

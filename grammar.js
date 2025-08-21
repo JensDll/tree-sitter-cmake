@@ -23,7 +23,7 @@ export default grammar({
     $._line_comment,
     $.error_sentinel,
   ],
-  inline: ($) => [$._variable, $._arguments],
+  inline: ($) => [$._arguments],
   word: ($) => $.identifier,
   conflicts: ($) => [[$.comment]],
   rules: {
@@ -123,28 +123,25 @@ export default grammar({
         repeat1(
           choice(
             alias($.unquoted_text, $.text),
-            $._variable,
+            $.variable,
             $.escape_sequence,
           ),
         ),
       ),
 
-    quoted_argument: ($) =>
-      seq(
-        '"',
-        repeat(choice(
-          alias($.quoted_text, $.text),
-          $._variable,
-          $.escape_sequence,
-          $.quoted_continuation,
-        )),
-        '"',
-      ),
+    quoted_argument: ($) => seq('"', optional($.quoted_content), '"'),
+    quoted_content: ($) =>
+      repeat1(choice(
+        alias($.quoted_text, $.text),
+        $.variable,
+        $.escape_sequence,
+        $.quoted_continuation,
+      )),
 
     bracket_argument: ($) =>
       seq($.bracket_open, optional($.bracket_content), $.bracket_close),
 
-    _variable: ($) =>
+    variable: ($) =>
       choice($.normal_variable, $.env_variable, $.cache_variable),
 
     normal_variable: ($) =>
@@ -168,7 +165,7 @@ export default grammar({
 
     variable_content: ($) =>
       repeat1(
-        choice(alias($.variable_text, $.text), $.escape_sequence, $._variable),
+        choice(alias($.variable_text, $.text), $.escape_sequence, $.variable),
       ),
 
     if: () => /if/i,
