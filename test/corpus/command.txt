@@ -37,10 +37,9 @@ message(${x} "abc")
     (identifier)
     (argument_list
       (unquoted_argument
-        (variable
-          (normal_variable
-            (variable_content
-              (text)))))
+        (normal_variable
+          (variable_content
+            (text))))
       (quoted_argument
         (quoted_content
           (text))))))
@@ -59,10 +58,9 @@ message(${x}#
     (identifier)
     (argument_list
       (unquoted_argument
-        (variable
-          (normal_variable
-            (variable_content
-              (text)))))
+        (normal_variable
+          (variable_content
+            (text))))
       (comment)
       (quoted_argument
         (quoted_content
@@ -81,10 +79,9 @@ message(${x} [[abc]])
     (identifier)
     (argument_list
       (unquoted_argument
-        (variable
-          (normal_variable
-            (variable_content
-              (text)))))
+        (normal_variable
+          (variable_content
+            (text))))
       (bracket_argument
         (bracket_open)
         (bracket_content)
@@ -159,10 +156,9 @@ message(${x}"" a("xyz") "")
     (identifier)
     (argument_list
       (unquoted_argument
-        (variable
-          (normal_variable
-            (variable_content
-              (text))))
+        (normal_variable
+          (variable_content
+            (text)))
         (text))
       (unquoted_argument
         (text))

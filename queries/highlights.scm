@@ -26,7 +26,12 @@
 
 (comment) @comment @spell
 
-(variable) @punctuation.special
+[
+  (normal_variable)
+  (env_variable)
+  (cache_variable)
+] @punctuation.special
+
 (variable_content) @variable
 
 (
@@ -39,6 +44,7 @@
 ] @punctuation.bracket
 
 (escape_sequence) @string.escape
+(quoted_continuation) @string.escape
 
 (argument_list
   (quoted_argument) @string)
@@ -48,7 +54,7 @@
 
 (
   (unquoted_argument) @boolean
-  (#match? @boolean "^(1|[oO][nN]|[yY][eE][sS]|[tT][rR][uU][eE]|[yY]|0|[oO][fF][fF]|[nN][oO]|[fF][aA][lL][sS][eE]|[nN]|[iI][gG][nN][oO][rR][eE]|[nN][oO][tT][fF][oO][uU][nN][dD]|.*-[nN][oO][tT][fF][oO][uU][nN][dD])$"))
+  (#match? @boolean "^([oO][nN]|[yY][eE][sS]|[tT][rR][uU][eE]|[yY]|[oO][fF][fF]|[nN][oO]|[fF][aA][lL][sS][eE]|[nN]|[iI][gG][nN][oO][rR][eE]|[nN][oO][tT][fF][oO][uU][nN][dD]|.*-[nN][oO][tT][fF][oO][uU][nN][dD])$"))
 
 (command
   (identifier) @function)
@@ -105,6 +111,25 @@
 
 (function_command
   (function)
+  (argument_list
+    .
+    [
+      (unquoted_argument) @function
+      (bracket_argument
+        (bracket_content) @function)
+      (quoted_argument
+        (quoted_content) @function)
+    ]
+    [
+      (unquoted_argument) @variable.parameter
+      (bracket_argument
+        (bracket_content) @variable.parameter)
+      (quoted_argument
+        (quoted_content) @variable.parameter)
+    ]*))
+
+(macro_command
+  (macro)
   (argument_list
     .
     [

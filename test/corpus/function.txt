@@ -112,10 +112,9 @@ endfunction(#[==[ end ]==])
           (unquoted_argument
             (text))
           (unquoted_argument
-            (variable
-              (normal_variable
-                (variable_content
-                  (text)))))))
+            (normal_variable
+              (variable_content
+                (text))))))
       (command
         (identifier)
         (argument_list
@@ -153,28 +152,24 @@ endfunction(#[==[ end ]==])
           (unquoted_argument
             (text))
           (unquoted_argument
-            (variable
+            (normal_variable
+              (variable_content
+                (text))))
+          (quoted_argument
+            (quoted_content
               (normal_variable
                 (variable_content
                   (text)))))
           (quoted_argument
             (quoted_content
-              (variable
-                (normal_variable
-                  (variable_content
-                    (text))))))
+              (normal_variable
+                (variable_content
+                  (text)))))
           (quoted_argument
             (quoted_content
-              (variable
-                (normal_variable
-                  (variable_content
-                    (text))))))
-          (quoted_argument
-            (quoted_content
-              (variable
-                (normal_variable
-                  (variable_content
-                    (text)))))))))
+              (normal_variable
+                (variable_content
+                  (text))))))))
     (endfunction_command
       (endfunction)
       (argument_list

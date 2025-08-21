@@ -167,10 +167,9 @@ endif()
       (elseif)
       (argument_list
         (unquoted_argument
-          (variable
-            (normal_variable
-              (variable_content
-                (text)))))))
+          (normal_variable
+            (variable_content
+              (text))))))
     (body
       (comment
         (bracket_argument

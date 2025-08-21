@@ -163,19 +163,17 @@ message(${x}#[[foo]])
     (identifier)
     (argument_list
       (unquoted_argument
-        (variable
-          (normal_variable
-            (variable_content
-              (text)))))
+        (normal_variable
+          (variable_content
+            (text))))
       (comment)))
   (command
     (identifier)
     (argument_list
       (unquoted_argument
-        (variable
-          (normal_variable
-            (variable_content
-              (text)))))
+        (normal_variable
+          (variable_content
+            (text))))
       (comment
         (bracket_argument
           (bracket_open)

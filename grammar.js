@@ -3,9 +3,7 @@ const zero_or_more_horizontal_whitespace = /[^\S\r\n]*/;
 export default grammar({
   name: "cmake",
   extras: () => [],
-  externals: (
-    $,
-  ) => [
+  externals: ($) => [
     $.unquoted_text,
     $.quoted_text,
     $.variable_text,
@@ -23,7 +21,7 @@ export default grammar({
     $._line_comment,
     $.error_sentinel,
   ],
-  inline: ($) => [$._arguments],
+  inline: ($) => [$._variable, $._arguments],
   word: ($) => $.identifier,
   conflicts: ($) => [[$.comment]],
   rules: {
@@ -123,7 +121,7 @@ export default grammar({
         repeat1(
           choice(
             alias($.unquoted_text, $.text),
-            $.variable,
+            $._variable,
             $.escape_sequence,
           ),
         ),
@@ -131,17 +129,19 @@ export default grammar({
 
     quoted_argument: ($) => seq('"', optional($.quoted_content), '"'),
     quoted_content: ($) =>
-      repeat1(choice(
-        alias($.quoted_text, $.text),
-        $.variable,
-        $.escape_sequence,
-        $.quoted_continuation,
-      )),
+      repeat1(
+        choice(
+          alias($.quoted_text, $.text),
+          $._variable,
+          $.escape_sequence,
+          $.quoted_continuation,
+        ),
+      ),
 
     bracket_argument: ($) =>
       seq($.bracket_open, optional($.bracket_content), $.bracket_close),
 
-    variable: ($) =>
+    _variable: ($) =>
       choice($.normal_variable, $.env_variable, $.cache_variable),
 
     normal_variable: ($) =>
@@ -165,7 +165,7 @@ export default grammar({
 
     variable_content: ($) =>
       repeat1(
-        choice(alias($.variable_text, $.text), $.escape_sequence, $.variable),
+        choice(alias($.variable_text, $.text), $.escape_sequence, $._variable),
       ),
 
     if: () => /if/i,
